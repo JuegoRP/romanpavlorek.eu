@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Roman Pavlorek — hry, hudba, příběhy.">
+<meta property="og:title" content="Roman Pavlorek">
+<meta property="og:description" content="Hry, hudba a příběhy. Jeden člověk, hodně zvědavosti.">
+<title>Roman Pavlorek</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f5f3ff'/%3E%3Ctext x='16' y='23' font-family='sans-serif' font-size='17' font-weight='900' font-style='italic' text-anchor='middle' fill='%234f46e5'%3ERP%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:     #f0ebe1;
+  --bg2:    #e8e1d5;
+  --bg3:    #ddd5c6;
+  --text:   #0f0f0e;
+  --dim:    rgba(15,15,14,0.52);
+  --muted:  rgba(15,15,14,0.36);
+  --border: rgba(15,15,14,0.08);
+  --accent:      #4f46e5;
+  --accent-dim:  rgba(79,70,229,0.08);
+  --accent-mid:  rgba(79,70,229,0.18);
+  --accent-text: rgba(79,70,229,0.72);
+  --r:    12px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; background: #f5f3ff; scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+body { background: transparent; color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+/* ===== ANIMATED BACKGROUND ===== */
+#bg-anim {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  background: #f5f3ff;
+}
+.blob {
+  position: absolute; border-radius: 50%;
+  filter: blur(90px); will-change: transform, background;
+}
+.b1 {
+  width: 55vw; height: 55vw; top: -15%; right: -10%;
+  animation: b1anim 14s ease-in-out infinite;
+}
+.b2 {
+  width: 44vw; height: 44vw; bottom: -14%; left: -8%;
+  animation: b2anim 11s ease-in-out infinite;
+}
+.b3 {
+  width: 32vw; height: 32vw; top: 30%; left: 28%;
+  animation: b3anim 17s ease-in-out infinite;
+}
+@keyframes b1anim {
+  0%,100% { transform: translate(0,0) scale(1);    background: rgba(79,70,229,0.18); }
+  30%     { transform: translate(-50px,60px) scale(1.12); background: rgba(79,70,229,0.10); }
+  60%     { transform: translate(40px,-30px) scale(0.9);  background: rgba(245,197,24,0.14); }
+}
+@keyframes b2anim {
+  0%,100% { transform: translate(0,0) scale(1);    background: rgba(245,197,24,0.13); }
+  35%     { transform: translate(60px,-50px) scale(1.15); background: rgba(15,15,14,0.07); }
+  70%     { transform: translate(-30px,40px) scale(0.88); background: rgba(79,70,229,0.12); }
+}
+@keyframes b3anim {
+  0%,100% { transform: translate(0,0) scale(1);    background: rgba(255,255,255,0.55); }
+  40%     { transform: translate(-70px,50px) scale(1.2);  background: rgba(245,197,24,0.09); }
+  75%     { transform: translate(50px,-60px) scale(0.85); background: rgba(15,15,14,0.05); }
+}
+
+/* ===== LAYOUT ===== */
+#app { display: flex; min-height: 100vh; position: relative; z-index: 1; }
+
+/* ===== SIDEBAR ===== */
+#sidebar {
+  width: 72px;
+  background: rgba(240,235,225,0.88);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-right: 0.5px solid var(--border);
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: space-between; padding: 32px 0;
+  position: fixed; top: 0; left: 0; height: 100vh; z-index: 10;
+}
+
+#logo {
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-style: italic; font-weight: 800;
+  letter-spacing: -0.04em; color: var(--accent);
+  cursor: pointer; transition: opacity 0.3s; user-select: none;
+}
+#logo:hover { opacity: 0.55; }
+
+.nav-wrap { display: flex; flex-direction: column; gap: 2px; align-items: center; }
+
+.s-nav {
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  font-size: 9.5px; letter-spacing: 0.22em; color: var(--muted);
+  cursor: pointer; padding: 13px 8px; text-transform: uppercase;
+  font-weight: 600; transition: color 0.25s; position: relative; user-select: none;
+}
+.s-nav::before {
+  content: ''; position: absolute; left: 0; top: 50%;
+  width: 2px; height: 0; background: var(--accent);
+  transform: translateY(-50%); transition: height 0.32s ease; border-radius: 1px;
+}
+.s-nav:hover { color: var(--dim); }
+.s-nav.active { color: var(--text); }
+.s-nav.active::before { height: 60%; }
+
+.sidebar-bottom { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+
+.lang-wrap { display: flex; flex-direction: column; gap: 3px; align-items: center; }
+.lang-btn {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.1em;
+  width: 32px; height: 20px; border-radius: 4px;
+  background: transparent; border: 0.5px solid var(--border);
+  color: var(--muted); cursor: pointer; transition: all 0.2s;
+}
+.lang-btn:hover { color: var(--text); border-color: rgba(15,15,14,0.2); }
+.lang-btn.active { background: var(--accent-dim); border-color: var(--accent-mid); color: var(--accent); }
+
+#year {
+  font-size: 9px; color: var(--muted);
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  letter-spacing: 0.22em; font-weight: 500;
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar {
+  position: fixed; left: 72px; top: 0; width: 1px; height: 100%; z-index: 5;
+  background: rgba(15,15,14,0.05);
+}
+.progress-fill {
+  width: 1px; height: 0%;
+  background: linear-gradient(to bottom, #f59e0b, #ef4444, #8b5cf6, #4f46e5, #06b6d4, #10b981);
+  transition: height 0.12s ease;
+}
+
+/* ===== MAIN ===== */
+#main { flex: 1; position: relative; z-index: 2; margin-left: 72px; }
+
+/* ===== SECTIONS ===== */
+.section {
+  min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 100px 96px 80px; position: relative;
+}
+.section + .section { border-top: 0.5px solid var(--border); }
+
+.s-label {
+  font-size: 10px; letter-spacing: 0.32em; color: var(--accent-text);
+  text-transform: uppercase; margin-bottom: 24px; font-weight: 700;
+  display: flex; align-items: center; gap: 10px;
+}
+.s-label::before { content: ''; width: 20px; height: 1px; background: var(--accent); opacity: 0.55; }
+
+.s-title {
+  font-family: 'Fraunces', serif; font-optical-sizing: auto;
+  font-size: clamp(32px, 4.8vw, 68px); font-weight: 700; line-height: 1.12;
+  margin-bottom: 28px; letter-spacing: -0.02em; text-align: center;
+}
+.s-title em { font-style: italic; color: var(--accent); }
+
+.s-body {
+  font-size: 16px; color: var(--dim); line-height: 1.82;
+  max-width: 500px; margin-bottom: 32px; font-weight: 300;
+  text-align: center;
+}
+
+/* Tags */
+.tags { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; }
+.tag {
+  font-size: 11px; letter-spacing: 0.07em; color: var(--dim);
+  background: rgba(15,15,14,0.04); border: 0.5px solid rgba(15,15,14,0.11);
+  padding: 7px 15px; border-radius: 100px; text-transform: uppercase; font-weight: 500;
+  transition: all 0.22s; cursor: default; text-decoration: none; display: inline-block;
+}
+a.tag { cursor: pointer; }
+a.tag:hover, .tag.active { background: var(--accent-dim); border-color: var(--accent-mid); color: var(--accent); }
+
+/* Scroll hint */
+.scroll-hint {
+  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+  font-size: 9px; color: var(--muted); letter-spacing: 0.3em; text-transform: uppercase;
+  display: flex; flex-direction: column; align-items: center; gap: 10px; font-weight: 500;
+}
+.sh-line {
+  width: 0.5px; height: 44px;
+  background: linear-gradient(to bottom, rgba(15,15,14,0.18), transparent);
+  position: relative; overflow: hidden;
+}
+.sh-line::after {
+  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 14px;
+  background: var(--accent); opacity: 0.55;
+  animation: scrollAnim 2.4s ease-in-out infinite;
+}
+@keyframes scrollAnim { 0%{transform:translateY(-100%);opacity:0} 40%{opacity:1} 100%{transform:translateY(400%);opacity:0} }
+
+/* ===== HERO NAME ===== */
+.hero-name {
+  margin-bottom: 24px;
+  display: flex; flex-direction: column; align-items: center;
+  line-height: 1.12; position: relative;
+}
+.hn-first {
+  font-family: 'Fraunces', serif; font-optical-sizing: auto;
+  font-style: normal; font-weight: 700;
+  font-size: clamp(36px, 5.5vw, 72px);
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.hn-last {
+  font-family: 'Fraunces', serif; font-optical-sizing: auto;
+  font-style: italic; font-weight: 700;
+  font-size: clamp(36px, 5.5vw, 72px);
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+@keyframes nameReveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-line {
+  font-size: 13px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 28px; margin-top: 16px; text-align: center;
+}
+
+/* ===== MUSIC TABS ===== */
+.music-tabs { display: flex; gap: 4px; margin-bottom: 28px; }
+.music-tab-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 7px 18px; border-radius: 20px; border: 0.5px solid var(--border);
+  background: transparent; color: var(--muted); cursor: pointer;
+  transition: all 0.2s;
+}
+.music-tab-btn:hover { color: var(--text); border-color: rgba(15,15,14,0.2); }
+.music-tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 2px 12px var(--accent-mid); }
+
+.music-panel { display: none; }
+.music-panel.active { display: block; }
+
+/* ===== ALBUM CARD ===== */
+.album-card {
+  display: flex; gap: 24px; align-items: center;
+  background: #fff; border: 0.5px solid var(--border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  border-radius: var(--r-xl); padding: 26px; max-width: 500px; margin-bottom: 20px;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.album-card:hover { border-color: var(--accent-mid); box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
+.album-cover {
+  width: 84px; height: 84px; flex-shrink: 0; border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: 0 6px 22px rgba(139,92,246,0.18);
+}
+.album-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.album-label { font-size: 9px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent-text); margin-bottom: 5px; }
+.album-name { font-family: 'Fraunces', serif; font-optical-sizing: auto; font-size: 18px; font-weight: 700; font-style: italic; margin-bottom: 3px; }
+.album-meta { font-size: 12px; color: var(--dim); font-weight: 300; margin-bottom: 10px; }
+.album-platforms { display: flex; gap: 5px; flex-wrap: wrap; }
+.ap {
+  font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); background: rgba(15,15,14,0.04);
+  border: 0.5px solid rgba(15,15,14,0.1); padding: 3px 8px; border-radius: 100px;
+}
+
+/* ===== PAVLER CARD ===== */
+.pavler-card {
+  background: #111110; border: 0.5px solid rgba(255,255,255,0.07);
+  border-radius: var(--r-xl); padding: 26px 30px;
+  max-width: 500px; margin-bottom: 20px;
+  transition: border-color 0.25s;
+}
+.pavler-card:hover { border-color: rgba(255,255,255,0.16); }
+.pavler-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 10px; }
+.pavler-name {
+  font-family: 'Fraunces', serif; font-optical-sizing: auto; font-size: 28px; font-weight: 700;
+  font-style: italic; letter-spacing: -0.02em; color: #f5f5f0; margin-bottom: 8px;
+}
+.pavler-desc { font-size: 13px; color: rgba(255,255,255,0.38); line-height: 1.7; font-weight: 300; margin-bottom: 16px; }
+.pavler-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.pavler-chip {
+  font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05);
+  border: 0.5px solid rgba(255,255,255,0.1); padding: 3px 9px; border-radius: 100px;
+}
+
+/* ===== STUDIO SECTION ===== */
+.studio-badge { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 28px; }
+.studio-mark { background: #f5c518; color: #111; font-family: 'Inter', sans-serif; font-weight: 800; font-style: italic; font-size: 14px; letter-spacing: -0.04em; padding: 5px 9px; border-radius: 5px; line-height: 1.1; }
+.studio-label { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); }
+
+.proj-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 500px; margin-bottom: 24px; }
+.pr-card {
+  background: #fff; border: 0.5px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  border-radius: var(--r-lg); padding: 20px 22px;
+  cursor: pointer; transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+  text-decoration: none; display: block; color: var(--text); position: relative; overflow: hidden;
+}
+.pr-card::after { content: '↗'; position: absolute; top: 16px; right: 16px; font-size: 14px; color: rgba(15,15,14,0.18); transition: all 0.25s; }
+.pr-card:hover { border-color: var(--accent-mid); transform: translateY(-3px); box-shadow: 0 7px 22px rgba(0,0,0,0.08); }
+.pr-card:hover::after { color: var(--accent); transform: translate(3px,-3px); }
+.pr-dot { width: 5px; height: 5px; border-radius: 50%; margin-bottom: 12px; }
+.pr-dot.amber { background: #f5c518; }
+.pr-dot.teal  { background: #06b6d4; }
+.pr-name { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 3px; }
+.pr-type { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px; }
+.pr-desc { font-size: 11.5px; color: rgba(15,15,14,0.44); line-height: 1.58; font-weight: 300; }
+
+/* ===== PRÓZA SECTION ===== */
+.writing-card {
+  background: #fff; border: 0.5px solid var(--border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  border-radius: var(--r-xl); padding: 28px 32px;
+  max-width: 500px; margin-bottom: 16px;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.writing-card:hover { border-color: var(--accent-mid); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.07); }
+.wc-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); background: rgba(15,15,14,0.04);
+  border: 0.5px solid var(--border); padding: 4px 10px; border-radius: 100px; margin-bottom: 14px;
+}
+.wc-title { font-family: 'Fraunces', serif; font-optical-sizing: auto; font-size: 26px; font-weight: 700; font-style: italic; letter-spacing: -0.01em; margin-bottom: 6px; color: var(--text); }
+.wc-genre { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.18em; font-weight: 600; margin-bottom: 12px; }
+.wc-desc { font-size: 13px; color: var(--dim); line-height: 1.72; font-weight: 300; }
+
+.writing-note {
+  max-width: 480px; padding: 18px 22px;
+  background: var(--accent-dim); border: 0.5px solid var(--accent-mid);
+  border-radius: var(--r); margin-bottom: 28px;
+  font-size: 13.5px; color: var(--dim); line-height: 1.72; font-weight: 300;
+  font-style: italic; border-left: 2.5px solid var(--accent);
+}
+
+/* ===== ZÁPISKY SECTION ===== */
+.thought-posts { display: flex; flex-direction: column; gap: 8px; max-width: 520px; margin-bottom: 28px; }
+.thought-post {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 15px 18px; background: rgba(15,15,14,0.03); border: 0.5px solid var(--border);
+  border-radius: var(--r); transition: border-color 0.2s, background 0.2s;
+  text-decoration: none; color: inherit;
+}
+.thought-post:hover { border-color: var(--accent-mid); background: var(--accent-dim); }
+.thought-date { font-size: 9px; letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; font-weight: 500; min-width: 76px; }
+.thought-title { flex: 1; padding: 0 14px; font-size: 13.5px; color: var(--dim); font-weight: 400; }
+.thought-arr { font-size: 13px; color: rgba(15,15,14,0.2); transition: all 0.2s; }
+.thought-post:hover .thought-arr { color: var(--accent); transform: translate(2px,-2px); }
+.thought-empty { font-size: 13px; color: var(--muted); font-weight: 300; font-style: italic; padding: 18px 0; }
+
+.blog-card {
+  background: #fff; border: 0.5px solid var(--border);
+  border-radius: var(--r-lg); padding: 22px 26px; max-width: 500px;
+  text-decoration: none; color: var(--text); display: block;
+  transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+}
+.blog-card:hover { border-color: var(--accent-mid); transform: translateY(-2px); box-shadow: 0 5px 18px rgba(0,0,0,0.07); }
+.bc-label { font-size: 9px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent-text); margin-bottom: 6px; }
+.bc-name { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 5px; }
+.bc-desc { font-size: 12px; color: var(--muted); font-weight: 300; }
+
+/* ===== CONTACT ===== */
+.contact-form { display: flex; flex-direction: column; gap: 10px; max-width: 460px; margin-bottom: 24px; }
+.cf-row { display: flex; gap: 10px; }
+.cf-input {
+  flex: 1; background: #fff; border: 0.5px solid var(--border);
+  border-radius: 8px; padding: 12px 16px; font-family: 'Inter', sans-serif;
+  font-size: 13px; color: var(--text); outline: none; transition: border-color 0.2s;
+}
+.cf-input::placeholder { color: var(--muted); }
+.cf-input:focus { border-color: var(--accent-mid); }
+.cf-textarea { resize: vertical; min-height: 90px; }
+.cf-btn {
+  background: var(--accent); color: #fff;
+  padding: 13px 28px; border-radius: 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  cursor: pointer; border: none; transition: opacity 0.2s, transform 0.2s; align-self: flex-start;
+}
+.cf-btn:hover { opacity: 0.82; transform: translateY(-1px); }
+.cf-msg-ok { font-size: 12px; color: var(--accent); display: none; padding-top: 4px; }
+
+.contact-links { display: flex; gap: 9px; flex-wrap: wrap; }
+.c-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 15px; background: #fff;
+  border: 0.5px solid var(--border); border-radius: 8px;
+  font-size: 12px; color: var(--dim); text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+.c-link:hover { border-color: var(--accent-mid); color: var(--text); }
+.c-link-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-right: 2px; }
+
+/* ===== FOOTER ===== */
+#footer {
+  padding: 26px 96px; border-top: 0.5px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; z-index: 2;
+}
+.footer-logo {
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-style: italic;
+  font-weight: 800; color: var(--accent); letter-spacing: -0.035em; opacity: 0.65;
+}
+.footer-copy { font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+.footer-links { display: flex; gap: 20px; }
+.footer-lnk { font-size: 10px; color: var(--muted); text-decoration: none; letter-spacing: 0.07em; text-transform: uppercase; transition: color 0.2s; }
+.footer-lnk:hover { color: var(--accent); }
+
+/* ===== NOW BOX ===== */
+.now-box {
+  position: fixed; bottom: 28px; right: 28px; z-index: 20;
+  background: rgba(240,235,225,0.97); backdrop-filter: blur(20px);
+  border: 0.5px solid var(--accent-mid); border-radius: var(--r-lg);
+  padding: 12px 16px; max-width: 260px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.now-label {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.28em;
+  color: var(--accent-text); text-transform: uppercase;
+  margin-bottom: 5px; display: flex; align-items: center; gap: 6px;
+}
+.now-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: blink 1.6s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+.now-text { font-size: 11px; color: var(--dim); line-height: 1.6; font-weight: 300; }
+
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .section { padding: 80px 44px; }
+  #sidebar { width: 56px; }
+  .progress-bar { left: 56px; }
+  .proj-pair { grid-template-columns: 1fr; }
+  .cf-row { flex-direction: column; }
+  #footer { padding-left: 44px; padding-right: 44px; flex-direction: column; gap: 14px; text-align: center; }
+}
+@media (max-width: 600px) {
+  .section { padding: 60px 22px; }
+  #sidebar { width: 44px; }
+  .s-nav { font-size: 8px; padding: 11px 5px; }
+  .progress-bar { left: 44px; }
+  #logo { font-size: 13px; }
+  .now-box { bottom: 14px; right: 14px; max-width: 210px; }
+  #footer { padding: 20px 22px; }
+  .album-card { flex-direction: column; }
+}
+
+/* ===== COOKIE BAR ===== */
+#cookie-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 10001;
+  background: var(--bg2); border-top: 1px solid var(--border);
+  padding: 14px 24px; display: none; align-items: center; gap: 16px;
+  flex-wrap: wrap; justify-content: space-between;
+}
+.cookie-text { font-size: 13px; color: var(--dim); line-height: 1.5; flex: 1; min-width: 200px; }
+.cookie-text a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.cookie-btns { display: flex; gap: 8px; flex-shrink: 0; }
+.cookie-btn-accept {
+  background: var(--accent); color: #fff;
+  border: none; border-radius: 6px; padding: 8px 18px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  cursor: pointer; transition: opacity 0.15s;
+}
+.cookie-btn-accept:hover { opacity: 0.82; }
+.cookie-btn-reject {
+  background: transparent; color: var(--dim);
+  border: 0.5px solid var(--border); border-radius: 6px; padding: 8px 18px;
+  font-size: 12px; font-weight: 600; cursor: pointer; transition: border-color 0.15s, color 0.15s;
+}
+.cookie-btn-reject:hover { border-color: var(--text); color: var(--text); }
+
+</style>
+</head>
+<body>
+
+<div id="bg-anim" aria-hidden="true">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+</div>
+
+<!-- COOKIE BAR -->
+<div id="cookie-bar" role="region" aria-label="Cookie consent">
+  <p class="cookie-text">
+    <span data-cs="Tento web používá analytické cookies (Google Analytics)." data-en="This site uses analytics cookies (Google Analytics).">Tento web používá analytické cookies (Google Analytics).</span>
+  </p>
+  <div class="cookie-btns">
+    <button class="cookie-btn-accept" onclick="cookieConsent('yes')" data-cs="Přijmout" data-en="Accept">Přijmout</button>
+    <button class="cookie-btn-reject" onclick="cookieConsent('no')" data-cs="Odmítnout" data-en="Decline">Odmítnout</button>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <div id="logo" onclick="goTo(0)">RP</div>
+    <nav class="nav-wrap">
+      <div class="s-nav active" data-sec="0" data-cs="Úvod" data-en="Intro">Úvod</div>
+      <div class="s-nav" data-sec="1" data-cs="Hudba" data-en="Music">Hudba</div>
+      <div class="s-nav" data-sec="2" data-cs="Studio" data-en="Studio">Studio</div>
+      <div class="s-nav" data-sec="3" data-cs="Příběhy" data-en="Stories">Příběhy</div>
+      <div class="s-nav" data-sec="4" data-cs="Zápisky" data-en="Notes">Zápisky</div>
+      <div class="s-nav" data-sec="5" data-cs="Kontakt" data-en="Contact">Kontakt</div>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="lang-wrap">
+        <button class="lang-btn active" data-lang="cs" onclick="setLang('cs')">CS</button>
+        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+      </div>
+      <div id="year">2026</div>
+    </div>
+  </aside>
+
+  <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
+
+  <!-- MAIN -->
+  <main id="main">
+
+    <!-- 0: ÚVOD -->
+    <section class="section" id="sec-0">
+      <div class="hero-name">
+        <span class="hn-first" data-cs="Roman" data-en="Roman">Roman</span>
+        <span class="hn-last" data-cs="Pavlorek" data-en="Pavlorek">Pavlorek</span>
+      </div>
+      <div class="hero-line" data-cs="Hry · Hudba · Příběhy" data-en="Games · Music · Stories">Hry · Hudba · Příběhy</div>
+      <p class="s-body" data-cs="Stavím indie hry a aplikace, nahrávám hudbu, píšu. Jeden člověk a hodně zvědavosti." data-en="I build indie games and apps, record music, write. One person and a lot of curiosity.">Stavím indie hry a aplikace, nahrávám hudbu, píšu. Jeden člověk a hodně zvědavosti.</p>
+      <div class="tags">
+        <a class="tag" href="3rstudio_v3.html" data-cs="3R Studio →" data-en="3R Studio →">3R Studio →</a>
+        <span class="tag" data-cs="Spektrum barev" data-en="Spektrum barev">Spektrum barev</span>
+        <span class="tag" data-cs="Paleta" data-en="Paleta">Paleta</span>
+      </div>
+      <div class="scroll-hint"><div class="sh-line"></div><span data-cs="Procházet" data-en="Scroll">Procházet</span></div>
+    </section>
+
+    <!-- 1: HUDBA -->
+    <section class="section" id="sec-1">
+      <div class="s-label" data-cs="Hudba" data-en="Music">Hudba</div>
+      <h2 class="s-title"><span data-cs="Zvuk jako" data-en="Sound as">Zvuk jako</span><br><em><span data-cs="výraz." data-en="expression.">výraz.</span></em></h2>
+
+      <!-- Tab buttons -->
+      <div class="music-tabs">
+        <button class="music-tab-btn active" onclick="switchMusicTab('roman', this)" data-cs="Roman" data-en="Roman">Roman</button>
+        <button class="music-tab-btn" onclick="switchMusicTab('pavler', this)" data-cs="Pavler" data-en="Pavler">Pavler</button>
+      </div>
+
+      <!-- Roman panel -->
+      <div class="music-panel active" id="music-roman">
+        <div class="album-card">
+          <div class="album-cover">
+            <img src="21CDAC0A-9FB1-4540-9FDB-7F2680ACB245.PNG" alt="Spektrum barev">
+          </div>
+          <div class="album-info">
+            <div class="album-label" data-cs="Album · Srpen 2026" data-en="Album · August 2026">Album · Srpen 2026</div>
+            <div class="album-name" data-cs="Spektrum barev" data-en="Spektrum barev">Spektrum barev</div>
+            <div class="album-meta" data-cs="Multižánrové · vlastní hlas a texty" data-en="Multi-genre · own voice and lyrics">Multižánrové · vlastní hlas a texty</div>
+            <div class="album-platforms">
+              <span class="ap">Spotify</span>
+              <span class="ap">Apple Music</span>
+              <span class="ap">YouTube</span>
+            </div>
+          </div>
+        </div>
+        <div class="tags">
+          <a class="tag" href="roman-music.html" data-cs="Roman · Hudba →" data-en="Roman · Music →">Roman · Hudba →</a>
+          <span class="tag" data-cs="Vlastní texty" data-en="Original lyrics">Vlastní texty</span>
+        </div>
+      </div>
+
+      <!-- Pavler panel -->
+      <div class="music-panel" id="music-pavler">
+        <div class="pavler-card">
+          <div class="pavler-eyebrow" data-cs="AI Produkce · Viral" data-en="AI Production · Viral">AI Produkce · Viral</div>
+          <div class="pavler-name">Pavler</div>
+          <div class="pavler-desc" data-cs="Hyperpop, phonk a experimentální produkce generovaná s AI. Projekt zaměřený na digitální distribuci a virální dosah." data-en="Hyperpop, phonk and experimental AI-generated production. Focused on digital distribution and viral reach.">Hyperpop, phonk a experimentální produkce generovaná s AI. Projekt zaměřený na digitální distribuci a virální dosah.</div>
+          <div class="pavler-chips">
+            <span class="pavler-chip">Hyperpop</span>
+            <span class="pavler-chip">Phonk</span>
+            <span class="pavler-chip">AI</span>
+            <span class="pavler-chip">DistroKid</span>
+          </div>
+        </div>
+        <div class="tags">
+          <a class="tag" href="pavler.html" data-cs="Pavler →" data-en="Pavler →">Pavler →</a>
+          <span class="tag">TikTok</span>
+          <span class="tag">Spotify</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2: STUDIO -->
+    <section class="section" id="sec-2">
+      <div class="s-label" data-cs="3R Studio · Projekty" data-en="3R Studio · Projects">3R Studio · Projekty</div>
+      <h2 class="s-title"><span data-cs="Stavím" data-en="Building">Stavím</span><br><em><span data-cs="světy." data-en="worlds.">světy.</span></em></h2>
+      <p class="s-body" data-cs="Nezávislé studio, které jsem založil v roce 2026. Hry, aplikace a experimenty — jeden člověk, automatizace a hodně zvědavosti." data-en="An indie studio I founded in 2026. Games, apps and experiments — one person, automation and a lot of curiosity.">Nezávislé studio, které jsem založil v roce 2026. Hry, aplikace a experimenty — jeden člověk, automatizace a hodně zvědavosti.</p>
+
+      <div class="studio-badge">
+        <span class="studio-mark">3R</span>
+        <span class="studio-label">Studio</span>
+      </div>
+
+      <div class="proj-pair">
+        <a class="pr-card" href="conflux.html">
+          <div class="pr-dot amber"></div>
+          <div class="pr-name">CONFLUX</div>
+          <div class="pr-type" data-cs="Karetní hra · PC" data-en="Card Game · PC">Karetní hra · PC</div>
+          <div class="pr-desc" data-cs="Narativní karetní hra s větvícím příběhem. Launch srpen 2026." data-en="Narrative card game with a branching story. Launch August 2026.">Narativní karetní hra s větvícím příběhem. Launch srpen 2026.</div>
+        </a>
+        <a class="pr-card" href="gream.html">
+          <div class="pr-dot teal"></div>
+          <div class="pr-name">Gream</div>
+          <div class="pr-type" data-cs="Vzdělávání · Mobile" data-en="Education · Mobile">Vzdělávání · Mobile</div>
+          <div class="pr-desc" data-cs="Vzdělávací hra pro děti. App Store + Play, srpen 2026." data-en="Educational game for kids. App Store + Play, August 2026.">Vzdělávací hra pro děti. App Store + Play, srpen 2026.</div>
+        </a>
+      </div>
+
+      <div class="tags">
+        <a class="tag" href="3rstudio_v3.html" data-cs="Všechny projekty →" data-en="All projects →">Všechny projekty →</a>
+      </div>
+    </section>
+
+    <!-- 3: PRÓZA -->
+    <section class="section" id="sec-3">
+      <div class="s-label" data-cs="Příběhy · Tvorba" data-en="Stories · Writing">Příběhy · Tvorba</div>
+      <h2 class="s-title"><em><span data-cs="Paleta" data-en="Paleta">Paleta</span></em><br><span data-cs="a jiné příběhy." data-en="and other stories.">a jiné příběhy.</span></h2>
+
+      <div class="writing-card">
+        <div class="wc-status" data-cs="V přípravě" data-en="In progress">V přípravě</div>
+        <div class="wc-title">Paleta</div>
+        <div class="wc-genre" data-cs="Hybridní próza · Filozofie · Beletrie" data-en="Hybrid prose · Philosophy · Fiction">Hybridní próza · Filozofie · Beletrie</div>
+        <div class="wc-desc" data-cs="Próza na pomezí filozofie a beletrie. Příběhy ze způsobu, jakým vidím svět — psáno pro děti, čitelné pro každého, kdo přemýšlí jinak." data-en="Prose on the boundary of philosophy and fiction. Stories from the way I see the world — written for my children, readable for anyone who thinks differently.">Próza na pomezí filozofie a beletrie. Příběhy ze způsobu, jakým vidím svět — psáno pro děti, čitelné pro každého, kdo přemýšlí jinak.</div>
+      </div>
+
+      <div class="writing-note" data-cs="Píšu primárně pro své děti — aby věděly kdo je jejich táta, jak přemýšlí a co ho pohání. A pro lidi, kteří cítí že přemýšlejí jinak a potřebují vědět, že v tom nejsou sami." data-en="I write primarily for my children — so they know who their father is, how he thinks and what drives him. And for people who feel they think differently and need to know they're not alone.">Píšu primárně pro své děti — aby věděly kdo je jejich táta, jak přemýšlí a co ho pohání. A pro lidi, kteří cítí že přemýšlejí jinak a potřebují vědět, že v tom nejsou sami.</div>
+
+      <div class="tags">
+        <span class="tag" data-cs="Číst ukázku (brzy)" data-en="Read excerpt (soon)">Číst ukázku (brzy)</span>
+        <span class="tag" data-cs="Koupit (brzy)" data-en="Buy (soon)">Koupit (brzy)</span>
+      </div>
+    </section>
+
+    <!-- 4: ZÁPISKY -->
+    <section class="section" id="sec-4">
+      <div class="s-label" data-cs="Zápisky · Blog" data-en="Notes · Blog">Zápisky · Blog</div>
+      <h2 class="s-title"><em><span data-cs="Proč?" data-en="Why?">Proč?</span></em><br><span data-cs="Je moje oblíbená otázka." data-en="Is my favourite question.">Je moje oblíbená otázka.</span></h2>
+      <p class="s-body" data-cs="Nezabývám se vědou — zabývám se zvědavostí. Sem si zapisuji myšlenky, postřehy a otázky, které mě drží v pohybu." data-en="I'm not a scientist — I'm curious. This is where I note down thoughts, observations and questions that keep me going.">Nezabývám se vědou — zabývám se zvědavostí. Sem si zapisuji myšlenky, postřehy a otázky, které mě drží v pohybu.</p>
+
+      <div class="thought-posts" id="thought-list">
+        <div class="thought-empty" data-cs="Brzy první zápisky…" data-en="First notes coming soon…">Brzy první zápisky…</div>
+      </div>
+
+      <a class="blog-card" href="blog-personal.html">
+        <div class="bc-label" data-cs="Osobní blog" data-en="Personal blog">Osobní blog</div>
+        <div class="bc-name" data-cs="Zápisky a myšlenky →" data-en="Notes and thoughts →">Zápisky a myšlenky →</div>
+        <div class="bc-desc" data-cs="Zvědavost, otázky, postřehy. Psáno průběžně." data-en="Curiosity, questions, observations. Written continuously.">Zvědavost, otázky, postřehy. Psáno průběžně.</div>
+      </a>
+    </section>
+
+    <!-- 5: KONTAKT -->
+    <!-- 5: HRA -->
+    <section class="section" id="sec-5">
+      <div class="s-label" data-cs="Kontakt" data-en="Contact">Kontakt</div>
+      <h2 class="s-title"><span data-cs="Řekni" data-en="Say">Řekni</span><br><em><span data-cs="ahoj." data-en="hello.">ahoj.</span></em></h2>
+      <p class="s-body" data-cs="Zajímá tě spolupráce, chceš napsat, nebo přemýšlíš o podobných věcech? Ozvi se." data-en="Interested in working together, want to write, or thinking about similar things? Reach out.">Zajímá tě spolupráce, chceš napsat, nebo přemýšlíš o podobných věcech? Ozvi se.</p>
+
+      <form class="contact-form" id="cf" onsubmit="submitContact(event)">
+        <div class="cf-row">
+          <input class="cf-input" type="text" id="cf-name" data-placeholder-cs="Jméno" data-placeholder-en="Name" placeholder="Jméno" required>
+          <input class="cf-input" type="email" id="cf-email" data-placeholder-cs="Email" data-placeholder-en="Email" placeholder="Email" required>
+        </div>
+        <textarea class="cf-input cf-textarea" id="cf-msg" data-placeholder-cs="Zpráva" data-placeholder-en="Message" placeholder="Zpráva" required></textarea>
+        <button class="cf-btn" type="submit" data-cs="Odeslat →" data-en="Send →">Odeslat →</button>
+        <div class="cf-msg-ok" id="cf-ok" data-cs="✓ Odesláno, ozvu se brzy." data-en="✓ Sent, I'll get back to you soon.">✓ Odesláno, ozvu se brzy.</div>
+      </form>
+
+      <div class="contact-links">
+        <a class="c-link" href="mailto:roman@romanpavlorek.eu">
+          <span class="c-link-label" data-cs="Email" data-en="Email">Email</span> roman@romanpavlorek.eu
+        </a>
+        <a class="c-link" href="3rstudio_v3.html">
+          <span class="c-link-label" data-cs="Studio" data-en="Studio">Studio</span> 3rstudio.eu
+        </a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="footer">
+      <div class="footer-logo">RP</div>
+      <div class="footer-links">
+        <a class="footer-lnk" href="3rstudio_v3.html" data-cs="3R Studio" data-en="3R Studio">3R Studio</a>
+        <a class="footer-lnk" href="blog-personal.html" data-cs="Zápisky" data-en="Notes">Zápisky</a>
+        <a class="footer-lnk" href="#sec-1" data-cs="Hudba" data-en="Music">Hudba</a>
+        <a class="footer-lnk" href="#sec-5" data-cs="Kontakt" data-en="Contact">Kontakt</a>
+      </div>
+      <div class="footer-copy">© 2026 Roman Pavlorek</div>
+    </footer>
+
+  </main>
+</div>
+
+<!-- NOW BOX -->
+<div class="now-box">
+  <div class="now-label"><div class="now-dot"></div><span data-cs="Právě teď" data-en="Right now">Právě teď</span></div>
+  <div class="now-text" data-cs="Finalizuji CONFLUX a Gream. Píšu Paletu. Nahrávám Spektrum barev." data-en="Finalising CONFLUX and Gream. Writing Paleta. Recording Spektrum barev.">Finalizuji CONFLUX a Gream. Píšu Paletu. Nahrávám Spektrum barev.</div>
+</div>
+
+<script>
+/* ===== LANGUAGE ===== */
+const LANG_KEY = 'rp-lang';
+let currentLang = localStorage.getItem(LANG_KEY) || 'cs';
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem(LANG_KEY, lang);
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-cs]').forEach(el => {
+    if (el.dataset[lang]) el.textContent = el.dataset[lang];
+  });
+  document.querySelectorAll('[data-placeholder-cs]').forEach(el => {
+    el.placeholder = lang === 'en' ? (el.dataset.placeholderEn || '') : (el.dataset.placeholderCs || '');
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+}
+
+setLang(currentLang);
+
+/* ===== MUSIC TABS ===== */
+function switchMusicTab(tab, btn) {
+  document.querySelectorAll('.music-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.music-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('music-' + tab).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ===== FULL PAGE SCROLL ===== */
+const sections = Array.from(document.querySelectorAll('.section'));
+const navItems = Array.from(document.querySelectorAll('.s-nav'));
+const pfill = document.getElementById('pfill');
+let pageIndex = 0;
+let isTransitioning = false;
+
+function goTo(index) {
+  if (isTransitioning) return;
+  index = Math.max(0, Math.min(index, sections.length - 1));
+  if (index === pageIndex) return;
+  isTransitioning = true;
+  pageIndex = index;
+
+  document.documentElement.scrollTo({ top: sections[index].offsetTop, behavior: 'smooth' });
+  navItems.forEach((n, i) => n.classList.toggle('active', i === index));
+  pfill.style.height = (index / Math.max(sections.length - 1, 1) * 100) + '%';
+
+  setTimeout(() => { isTransitioning = false; }, 750);
+}
+
+window.addEventListener('wheel', e => {
+  e.preventDefault();
+  goTo(pageIndex + (e.deltaY > 0 ? 1 : -1));
+}, { passive: false });
+
+window.addEventListener('keydown', e => {
+  // Don't intercept when iframe has focus (user is playing the game)
+  if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); goTo(pageIndex + 1); }
+  if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); goTo(pageIndex - 1); }
+});
+
+let touchStartY = 0;
+window.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+window.addEventListener('touchend', e => {
+  const dy = touchStartY - e.changedTouches[0].clientY;
+  if (Math.abs(dy) > 44) goTo(pageIndex + (dy > 0 ? 1 : -1));
+}, { passive: true });
+
+navItems.forEach(n => {
+  n.addEventListener('click', () => goTo(parseInt(n.dataset.sec)));
+});
+
+/* ===== CONTACT FORM ===== */
+const CONTACT_URL = 'https://n8n.romanpavlorek.eu/webhook/contact';
+
+async function submitContact(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.cf-btn');
+  const ok = document.getElementById('cf-ok');
+  btn.textContent = currentLang === 'en' ? 'Sending…' : 'Odesílám…';
+  btn.disabled = true;
+  try {
+    await fetch(CONTACT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: document.getElementById('cf-name').value,
+        email: document.getElementById('cf-email').value,
+        message: document.getElementById('cf-msg').value,
+        lang: currentLang
+      })
+    });
+    ok.style.display = 'block';
+    e.target.reset();
+    btn.textContent = currentLang === 'en' ? 'Send →' : 'Odeslat →';
+  } catch {
+    btn.textContent = currentLang === 'en' ? 'Error — try again' : 'Chyba — zkus znovu';
+  }
+  btn.disabled = false;
+}
+
+/* ===== COOKIE BAR ===== */
+(function() {
+  function getCookie(name) { return document.cookie.split('; ').find(r => r.startsWith(name + '=')) || ''; }
+  if (!getCookie('cookie-consent')) document.getElementById('cookie-bar').style.display = 'flex';
+})();
+function cookieConsent(choice) {
+  document.cookie = 'cookie-consent=' + choice + '; max-age=' + (365*24*3600) + '; path=/; SameSite=Lax';
+  document.getElementById('cookie-bar').style.display = 'none';
+}
+
+/* ===== SCROLL REVEAL ===== */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.album-card, .writing-card, .pr-card, .pavler-card, .blog-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(14px)';
+  el.style.transition = 'opacity 0.52s ease, transform 0.52s ease, border-color 0.25s, box-shadow 0.25s';
+  io.observe(el);
+});
+</script>
+</body>
+</html>

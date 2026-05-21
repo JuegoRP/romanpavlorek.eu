@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pavler</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400;1,9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --dark: #070710;
+    --dark2: #0c0c1a;
+    --dark3: #111125;
+    --teal: #0affcb;
+    --teal2: #00e5b2;
+    --teal-dim: rgba(10,255,203,0.12);
+    --teal-glow: rgba(10,255,203,0.25);
+    --text: rgba(240,238,255,0.92);
+    --muted: rgba(240,238,255,0.45);
+    --border: rgba(10,255,203,0.15);
+    --font-body: 'DM Sans', sans-serif;
+    --font-head: 'Fraunces', serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; gap: 16px;
+    padding: 0 clamp(20px, 5vw, 60px);
+    height: 56px;
+    background: rgba(7,7,16,0.92);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-back {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+  .nav-back:hover { color: var(--teal); }
+  .nav-back::before { content: '←  '; }
+
+  .nav-sep { color: var(--border); font-size: 18px; margin: 0 4px; }
+
+  .nav-alias { display: flex; gap: 4px; margin-right: auto; }
+
+  .alias-btn {
+    font-family: var(--font-body);
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: var(--muted);
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .alias-btn:hover { color: var(--teal); border-color: var(--border); }
+  .alias-btn.active {
+    color: var(--teal);
+    border-color: var(--teal);
+    background: var(--teal-dim);
+    box-shadow: 0 0 16px rgba(10,255,203,0.15);
+  }
+
+  .nav-lang { display: flex; gap: 2px; margin-left: 8px; }
+  .lang-btn {
+    background: none; border: none; cursor: pointer;
+    font-family: var(--font-body); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 5px 9px; border-radius: 6px;
+    color: var(--muted); transition: all 0.2s;
+  }
+  .lang-btn.active { color: var(--teal); background: var(--teal-dim); }
+  .lang-btn:hover:not(.active) { color: var(--text); }
+
+  /* ── GLITCH NAME ── */
+  @keyframes glitch-clip-1 {
+    0%   { clip-path: inset(10% 0 80% 0); transform: translate(-4px, 0); }
+    20%  { clip-path: inset(60% 0 10% 0); transform: translate(4px, 0); }
+    40%  { clip-path: inset(30% 0 50% 0); transform: translate(-2px, 1px); }
+    60%  { clip-path: inset(70% 0 5%  0); transform: translate(3px, -1px); }
+    80%  { clip-path: inset(20% 0 65% 0); transform: translate(-3px, 0); }
+    100% { clip-path: inset(10% 0 80% 0); transform: translate(-4px, 0); }
+  }
+  @keyframes glitch-clip-2 {
+    0%   { clip-path: inset(50% 0 30% 0); transform: translate(5px, 0); }
+    25%  { clip-path: inset(15% 0 70% 0); transform: translate(-5px, 1px); }
+    50%  { clip-path: inset(75% 0 0%  0); transform: translate(3px, -2px); }
+    75%  { clip-path: inset(5%  0 85% 0); transform: translate(-4px, 0); }
+    100% { clip-path: inset(50% 0 30% 0); transform: translate(5px, 0); }
+  }
+  @keyframes glitch-skew {
+    0%, 100% { transform: skewX(0deg); }
+    5%  { transform: skewX(-2deg); }
+    10% { transform: skewX(1.5deg); }
+    15% { transform: skewX(0deg); }
+    45% { transform: skewX(0deg); }
+    50% { transform: skewX(-1.5deg); }
+    55% { transform: skewX(1deg); }
+    60% { transform: skewX(0deg); }
+  }
+  @keyframes scan-line {
+    0%   { top: -10%; }
+    100% { top: 110%; }
+  }
+  @keyframes flicker {
+    0%, 95%, 97%, 100% { opacity: 1; }
+    96% { opacity: 0.85; }
+    98% { opacity: 0.92; }
+  }
+  @keyframes teal-pulse {
+    0%, 100% { text-shadow: 0 0 40px rgba(10,255,203,0.4), 0 0 80px rgba(10,255,203,0.15); }
+    50% { text-shadow: 0 0 60px rgba(10,255,203,0.7), 0 0 120px rgba(10,255,203,0.3), 0 0 200px rgba(10,255,203,0.1); }
+  }
+
+  .glitch-wrap {
+    position: relative;
+    display: inline-block;
+    animation: glitch-skew 8s infinite linear, flicker 6s infinite;
+  }
+  .glitch-wrap::before,
+  .glitch-wrap::after {
+    content: attr(data-text);
+    position: absolute; top: 0; left: 0; right: 0;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .glitch-wrap::before {
+    color: #ff2d55;
+    animation: glitch-clip-1 3.5s infinite steps(1);
+    mix-blend-mode: screen;
+  }
+  .glitch-wrap::after {
+    color: var(--teal);
+    animation: glitch-clip-2 2.8s infinite steps(1);
+    mix-blend-mode: screen;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-start;
+    padding: 100px clamp(24px, 8vw, 100px) 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 60% at 80% 40%, rgba(10,255,203,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 70%, rgba(10,255,203,0.03) 0%, transparent 60%);
+  }
+
+  /* scan line effect */
+  .hero::before {
+    content: '';
+    position: absolute; left: 0; right: 0; height: 2px;
+    background: linear-gradient(to right, transparent, rgba(10,255,203,0.4), transparent);
+    animation: scan-line 4s linear infinite;
+    pointer-events: none; z-index: 1;
+  }
+
+  /* grid overlay */
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(10,255,203,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(10,255,203,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 20px;
+    position: relative; z-index: 2;
+  }
+
+  .hero-name {
+    font-family: var(--font-head);
+    font-size: clamp(88px, 18vw, 200px);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 0.88;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    animation: teal-pulse 4s ease-in-out infinite;
+    position: relative; z-index: 2;
+    margin-bottom: 32px;
+  }
+
+  .hero-desc {
+    max-width: 520px;
+    position: relative; z-index: 2;
+  }
+
+  .hero-genre {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 20px;
+  }
+  .genre-tag {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--teal);
+    background: var(--teal-dim);
+  }
+
+  .hero-text {
+    font-size: 15px; line-height: 1.7;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+
+  .hero-cta {
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-body); font-size: 13px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 13px 28px;
+    background: var(--teal);
+    color: var(--dark);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 0 30px rgba(10,255,203,0.3);
+  }
+  .btn-primary:hover {
+    background: #fff;
+    box-shadow: 0 0 50px rgba(10,255,203,0.5);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-body); font-size: 13px; font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 13px 28px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+
+  /* ── PLAYER SECTION ── */
+  .player-section {
+    background: var(--dark2);
+    padding: 80px clamp(24px, 8vw, 100px);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .player-section::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(to right, transparent, var(--teal), transparent);
+  }
+
+  .section-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 32px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--border);
+  }
+
+  .player-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    align-items: start;
+    max-width: 1100px;
+  }
+
+  .player-about h2 {
+    font-family: var(--font-head);
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700; font-style: italic;
+    font-optical-sizing: auto;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .player-about p {
+    font-size: 15px; line-height: 1.75;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .spotify-wrap {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 24px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .spotify-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  /* Spotify embed placeholder — replace with:
+     <iframe src="https://open.spotify.com/embed/artist/[PAVLER_ARTIST_ID]?utm_source=generator&theme=0"
+             width="100%" height="352" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe> */
+  .spotify-placeholder {
+    height: 352px;
+    background: rgba(10,255,203,0.04);
+    border: 1px dashed rgba(10,255,203,0.2);
+    border-radius: 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 12px;
+    color: var(--muted);
+  }
+  .spotify-placeholder svg { opacity: 0.5; }
+  .spotify-placeholder span { font-size: 13px; letter-spacing: 0.05em; }
+
+  /* ── ABOUT SECTION ── */
+  .about-section {
+    padding: 80px clamp(24px, 8vw, 100px);
+    position: relative;
+  }
+
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: start;
+    max-width: 1100px;
+  }
+
+  .about-text h2 {
+    font-family: var(--font-head);
+    font-size: clamp(24px, 3.5vw, 38px);
+    font-weight: 700; font-style: italic;
+    font-optical-sizing: auto;
+    line-height: 1.25;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+  .about-text p {
+    font-size: 15px; line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  .stats-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 36px;
+  }
+  .stat-box {
+    background: var(--dark2);
+    padding: 24px 20px;
+  }
+  .stat-num {
+    font-family: var(--font-head);
+    font-size: 32px; font-weight: 700;
+    color: var(--teal);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── SOCIAL GRID ── */
+  .social-section {
+    padding: 0 clamp(24px, 8vw, 100px) 80px;
+  }
+
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    max-width: 1100px;
+  }
+
+  .soc-card {
+    display: flex; flex-direction: column;
+    align-items: flex-start; gap: 10px;
+    padding: 20px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--dark2);
+    text-decoration: none;
+    transition: all 0.22s;
+    position: relative;
+    overflow: hidden;
+  }
+  .soc-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--teal-dim);
+    opacity: 0; transition: opacity 0.22s;
+  }
+  .soc-card:hover { border-color: var(--teal); transform: translateY(-2px); }
+  .soc-card:hover::before { opacity: 1; }
+  .soc-card:hover .soc-name { color: var(--teal); }
+
+  .soc-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    position: relative; z-index: 1;
+  }
+  .soc-name {
+    font-size: 13px; font-weight: 600;
+    color: var(--text);
+    position: relative; z-index: 1;
+    transition: color 0.2s;
+  }
+  .soc-handle {
+    font-size: 11px; color: var(--muted);
+    position: relative; z-index: 1;
+  }
+  .soc-link-icon {
+    position: absolute; top: 14px; right: 14px;
+    color: var(--muted); font-size: 12px; opacity: 0;
+    transition: opacity 0.2s; z-index: 1;
+  }
+  .soc-card:hover .soc-link-icon { opacity: 1; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px clamp(24px, 8vw, 100px);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    background: var(--dark2);
+  }
+  .footer-wordmark {
+    font-family: var(--font-head);
+    font-size: 18px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--teal);
+    text-shadow: 0 0 20px rgba(10,255,203,0.4);
+  }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a {
+    font-size: 13px; color: var(--muted);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--teal); }
+  .footer-copy { font-size: 12px; color: var(--muted); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .player-inner, .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .social-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-name { font-size: clamp(64px, 20vw, 120px); }
+  }
+  @media (max-width: 600px) {
+    .social-grid { grid-template-columns: 1fr 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; align-items: flex-start; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-back" href="romanpavlorek_v4.html" data-cs="Roman Pavlorek" data-en="Roman Pavlorek">Roman Pavlorek</a>
+  <span class="nav-sep">/</span>
+  <div class="nav-alias">
+    <a class="alias-btn" href="roman-music.html">Roman</a>
+    <a class="alias-btn active" href="pavler.html">Pavler</a>
+  </div>
+  <div class="nav-lang">
+    <button class="lang-btn" id="btn-cs" onclick="setLang('cs')">CZ</button>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <p class="hero-eyebrow" data-cs="Hudební alias · Elektronická produkce" data-en="Music alias · Electronic production">Hudební alias · Elektronická produkce</p>
+
+  <div class="hero-name">
+    <span class="glitch-wrap" data-text="PAVLER">PAVLER</span>
+  </div>
+
+  <div class="hero-desc">
+    <div class="hero-genre">
+      <span class="genre-tag">Hyperpop</span>
+      <span class="genre-tag">Phonk</span>
+      <span class="genre-tag">AI prod.</span>
+      <span class="genre-tag">Viral</span>
+    </div>
+    <p class="hero-text" data-cs="Rychlá. Hlasitá. Přímočará. Pavler je alias bez filtrů — hudba stavěná pro moment, který tě zasáhne dřív, než stačíš přemýšlet." data-en="Fast. Loud. Direct. Pavler is an alias without filters — music built for the moment that hits you before you have time to think.">Rychlá. Hlasitá. Přímočará. Pavler je alias bez filtrů — hudba stavěná pro moment, který tě zasáhne dřív, než stačíš přemýšlet.</p>
+    <div class="hero-cta">
+      <a class="btn-primary" href="#" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        <span data-cs="Spotify" data-en="Spotify">Spotify</span>
+      </a>
+      <a class="btn-ghost" href="#player">
+        <span data-cs="Přehrát" data-en="Listen">Přehrát</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PLAYER SECTION -->
+<section class="player-section" id="player">
+  <div class="section-label" data-cs="Přehrávač" data-en="Player">Přehrávač</div>
+  <div class="player-inner">
+    <div class="player-about">
+      <h2 data-cs="Poslouchej teď" data-en="Listen now">Poslouchej teď</h2>
+      <p data-cs="Minutové vzorky. Plné tracky. Všechno na jednom místě." data-en="Minute samples. Full tracks. Everything in one place.">Minutové vzorky. Plné tracky. Všechno na jednom místě.</p>
+      <p data-cs="Produkce postavená na rychlosti a instinktu — žádné kompromisy, jen zvuk." data-en="Production built on speed and instinct — no compromises, just sound.">Produkce postavená na rychlosti a instinktu — žádné kompromisy, jen zvuk.</p>
+    </div>
+    <div class="spotify-wrap">
+      <span class="spotify-label" data-cs="Spotify · Pavler" data-en="Spotify · Pavler">Spotify · Pavler</span>
+      <div class="spotify-placeholder">
+        <!-- Replace with:
+          <iframe src="https://open.spotify.com/embed/artist/[PAVLER_ARTIST_ID]?utm_source=generator&theme=0"
+                  width="100%" height="352" frameborder="0" allowfullscreen
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        -->
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--teal)"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        <span data-cs="Spotify embed — doplň artist ID" data-en="Spotify embed — add artist ID">Spotify embed — doplň artist ID</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section class="about-section">
+  <div class="section-label" data-cs="O Pavlerovi" data-en="About Pavler">O Pavlerovi</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <h2 data-cs="Zvuk, který ti nedá spát" data-en="Sound that keeps you up">Zvuk, který ti nedá spát</h2>
+      <p data-cs="Pavler je výsledek experimentu — co se stane, když přestaneš řešit, co si myslí ostatní, a začneš dělat hudbu čistě pro ten pocit? Hyperpop, phonk, AI produkce. Žánry, které se nesnáší, ale dohromady fungují." data-en="Pavler is the result of an experiment — what happens when you stop caring what others think and start making music purely for the feeling? Hyperpop, phonk, AI production. Genres that don't get along, but together they work.">Pavler je výsledek experimentu — co se stane, když přestaneš řešit, co si myslí ostatní, a začneš dělat hudbu čistě pro ten pocit? Hyperpop, phonk, AI produkce. Žánry, které se nesnáší, ale dohromady fungují.</p>
+      <p data-cs="Tento alias existuje proto, aby byl svobodný. Žádná pravidla pro to, co je přijatelné — jen výsledek. A ten buď funguje okamžitě, nebo ne." data-en="This alias exists to be free. No rules about what's acceptable — just the result. And it either works immediately, or it doesn't.">Tento alias existuje proto, aby byl svobodný. Žádná pravidla pro to, co je přijatelné — jen výsledek. A ten buď funguje okamžitě, nebo ne.</p>
+      <p data-cs="Pavler je tam, kde Roman přestává kontrolovat." data-en="Pavler is where Roman stops controlling.">Pavler je tam, kde Roman přestává kontrolovat.</p>
+    </div>
+    <div>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-num">∞</div>
+          <div class="stat-label" data-cs="Žánrů" data-en="Genres">Žánrů</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">0</div>
+          <div class="stat-label" data-cs="Kompromisů" data-en="Compromises">Kompromisů</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">AI</div>
+          <div class="stat-label" data-cs="Produkce" data-en="Production">Produkce</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">1'</div>
+          <div class="stat-label" data-cs="Na zasažení" data-en="To hit">Na zasažení</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL GRID -->
+<section class="social-section">
+  <div class="section-label" data-cs="Sleduj" data-en="Follow">Sleduj</div>
+  <div class="social-grid">
+
+    <a class="soc-card" href="#" target="_blank" rel="noopener">
+      <span class="soc-icon" style="background:rgba(30,215,96,0.15);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      </span>
+      <span class="soc-name">Spotify</span>
+      <span class="soc-handle">@pavler</span>
+      <span class="soc-link-icon">↗</span>
+    </a>
+
+    <a class="soc-card" href="#" target="_blank" rel="noopener">
+      <span class="soc-icon" style="background:rgba(255,0,80,0.12);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#ff0050"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.27 8.27 0 004.84 1.55V6.79a4.85 4.85 0 01-1.07-.1z"/></svg>
+      </span>
+      <span class="soc-name">TikTok</span>
+      <span class="soc-handle">@pavler</span>
+      <span class="soc-link-icon">↗</span>
+    </a>
+
+    <a class="soc-card" href="#" target="_blank" rel="noopener">
+      <span class="soc-icon" style="background:rgba(255,0,0,0.12);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+      </span>
+      <span class="soc-name">YouTube</span>
+      <span class="soc-handle">@pavler</span>
+      <span class="soc-link-icon">↗</span>
+    </a>
+
+    <a class="soc-card" href="#" target="_blank" rel="noopener">
+      <span class="soc-icon" style="background:rgba(255,87,34,0.12);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5722"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm4.8 16.08c-1.48.88-4.08 1.2-7.2.72-1.04-.16-2-.44-2.8-.8-.12-.04-.2-.16-.2-.28 0-.2.16-.36.36-.28.76.32 1.68.6 2.68.76 2.96.44 5.44.12 6.72-.68.2-.12.44-.04.52.16.08.24-.04.48-.08.4zm.52-2.2c-.16.24-.48.32-.72.16-1.72-1.04-4.32-1.36-6.32-.76-.24.08-.48-.04-.56-.28-.08-.24.04-.48.28-.56 2.28-.68 5.16-.36 7.12.88.24.16.32.48.2.56zm.04-2.28c-2.04-1.2-5.4-1.32-7.32-.72-.28.08-.6-.08-.68-.36-.08-.28.08-.6.36-.68 2.24-.68 5.96-.52 8.32.84.28.16.36.52.2.76-.16.24-.52.32-.88.16z"/></svg>
+      </span>
+      <span class="soc-name">YouTube Music</span>
+      <span class="soc-handle">@pavler</span>
+      <span class="soc-link-icon">↗</span>
+    </a>
+
+    <a class="soc-card" href="#" target="_blank" rel="noopener">
+      <span class="soc-icon" style="background:rgba(252,60,68,0.12);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#FC3C44"><path d="M23.997 6.124a9.24 9.24 0 00-.24-2.19c-.317-1.31-1.064-2.31-2.24-2.96A6.362 6.362 0 0019.7.43c-.29-.127-.606-.2-.92-.27A43.902 43.902 0 0016.599 0H7.397C6.52 0 5.9.05 5.32.16a6.15 6.15 0 00-1.204.31C2.636 1.14 1.52 2.27 1.04 3.8a9.2 9.2 0 00-.28 2.04C.71 6.388.71 6.55.71 7.4v9.196c0 .851 0 1.016.05 1.553.117 1.375.57 2.45 1.46 3.272.617.57 1.38.934 2.21 1.11.35.076.734.12 1.13.14.55.03 1.16.04 1.97.04h9.146c.76 0 1.35-.01 1.89-.04a8.2 8.2 0 001.163-.14c.813-.176 1.567-.54 2.18-1.1.9-.81 1.35-1.9 1.46-3.282.05-.547.05-.71.05-1.563V7.4c0-.85 0-1.013-.043-1.276zM12 17.5a5.5 5.5 0 110-11 5.5 5.5 0 010 11zm5.73-9.95a1.29 1.29 0 110-2.58 1.29 1.29 0 010 2.58zM12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
+      </span>
+      <span class="soc-name">Apple Music</span>
+      <span class="soc-handle">@pavler</span>
+      <span class="soc-link-icon">↗</span>
+    </a>
+
+    <a class="soc-card" href="#" target="_blank" rel="noopener">
+      <span class="soc-icon" style="background:rgba(240,240,240,0.08);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--text)"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.741l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </span>
+      <span class="soc-name">X</span>
+      <span class="soc-handle">@pavler</span>
+      <span class="soc-link-icon">↗</span>
+    </a>
+
+    <a class="soc-card" href="#" target="_blank" rel="noopener">
+      <span class="soc-icon" style="background:rgba(225,48,108,0.12);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="url(#ig-grad)">
+          <defs>
+            <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#f09433"/>
+              <stop offset="25%" stop-color="#e6683c"/>
+              <stop offset="50%" stop-color="#dc2743"/>
+              <stop offset="75%" stop-color="#cc2366"/>
+              <stop offset="100%" stop-color="#bc1888"/>
+            </linearGradient>
+          </defs>
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+      </span>
+      <span class="soc-name">Instagram</span>
+      <span class="soc-handle">@pavler</span>
+      <span class="soc-link-icon">↗</span>
+    </a>
+
+    <a class="soc-card" href="#" target="_blank" rel="noopener">
+      <span class="soc-icon" style="background:rgba(24,119,242,0.12);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </span>
+      <span class="soc-name">Facebook</span>
+      <span class="soc-handle">@pavler</span>
+      <span class="soc-link-icon">↗</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-wordmark">PAVLER</div>
+  <div class="footer-links">
+    <a href="romanpavlorek_v4.html" data-cs="Roman Pavlorek" data-en="Roman Pavlorek">Roman Pavlorek</a>
+    <a href="roman-music.html" data-cs="Roman · Hudba" data-en="Roman · Music">Roman · Hudba</a>
+  </div>
+  <div class="footer-copy">© 2026</div>
+</footer>
+
+<script>
+  const LANG_KEY = 'rp-lang';
+
+  function setLang(lang) {
+    localStorage.setItem(LANG_KEY, lang);
+    document.querySelectorAll('[data-cs]').forEach(el => {
+      el.textContent = lang === 'en' ? (el.dataset.en || el.dataset.cs) : el.dataset.cs;
+    });
+    document.getElementById('btn-cs').classList.toggle('active', lang === 'cs');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang;
+  }
+
+  (function () {
+    const saved = localStorage.getItem(LANG_KEY) || 'cs';
+    setLang(saved);
+  })();
+</script>
+</body>
+</html>

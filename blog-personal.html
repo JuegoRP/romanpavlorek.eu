@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Zápisky a myšlenky — Roman Pavlorek. Osobní blog o zvědavosti, tvorbě a otázce proč.">
+<title>Zápisky — Roman Pavlorek</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:    #f0ebe1;
+  --bg2:   #e8e1d5;
+  --text:  #0f0f0e;
+  --dim:   rgba(15,15,14,0.52);
+  --muted: rgba(15,15,14,0.36);
+  --border: rgba(15,15,14,0.08);
+  --accent:      #4f46e5;
+  --accent-dim:  rgba(79,70,229,0.08);
+  --accent-mid:  rgba(79,70,229,0.18);
+  --accent-text: rgba(79,70,229,0.72);
+  --r: 12px; --r-lg: 18px;
+}
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-thumb { background: rgba(79,70,229,0.22); border-radius: 2px; }
+
+/* ===== NAV ===== */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 60px; background: rgba(240,235,225,0.94);
+  backdrop-filter: blur(20px); border-bottom: 0.5px solid var(--border); z-index: 100;
+}
+.nav-logo {
+  font-family: 'DM Sans', sans-serif; font-size: 16px; font-style: italic; font-weight: 800;
+  letter-spacing: -0.035em; color: var(--accent); text-decoration: none; opacity: 0.75;
+  transition: opacity 0.2s;
+}
+.nav-logo:hover { opacity: 1; }
+.nav-links { display: flex; align-items: center; gap: 22px; }
+.nav-lnk {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--dim); text-decoration: none; transition: color 0.2s;
+}
+.nav-lnk:hover { color: var(--accent); }
+.nav-lnk.active { color: var(--text); }
+.lang-toggle { display: flex; gap: 2px; margin-left: 6px; }
+.lang-btn {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 8px; border-radius: 4px; background: transparent;
+  border: 0.5px solid var(--border); color: var(--muted); cursor: pointer; transition: all 0.2s;
+}
+.lang-btn:hover { color: var(--text); border-color: rgba(15,15,14,0.2); }
+.lang-btn.active { background: var(--accent-dim); border-color: var(--accent-mid); color: var(--accent); }
+
+/* ===== PAGE HEADER ===== */
+.page-header { padding: 140px 80px 60px; border-bottom: 0.5px solid var(--border); }
+.ph-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.32em; color: var(--accent-text);
+  text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+}
+.ph-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--accent); opacity: 0.55; }
+.ph-title {
+  font-family: 'Fraunces', serif; font-optical-sizing: auto;
+  font-size: clamp(34px, 5.2vw, 68px); font-weight: 700; font-style: italic;
+  line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 20px;
+}
+.ph-title em { font-style: normal; color: var(--accent); }
+.ph-sub { font-size: 16px; color: var(--dim); font-weight: 300; max-width: 460px; line-height: 1.72; }
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+  display: flex; gap: 6px; padding: 24px 80px;
+  border-bottom: 0.5px solid var(--border); flex-wrap: wrap;
+}
+.f-btn {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--dim); background: transparent;
+  border: 0.5px solid var(--border); padding: 7px 16px; border-radius: 100px;
+  cursor: pointer; transition: all 0.2s;
+}
+.f-btn:hover { border-color: var(--accent-mid); color: var(--text); }
+.f-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ===== POSTS GRID ===== */
+.posts-wrap { max-width: 1200px; margin: 0 auto; padding: 56px 80px 120px; }
+.posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+.post-card {
+  background: #fff; border: 0.5px solid var(--border); border-radius: var(--r-lg);
+  overflow: hidden; text-decoration: none; color: inherit;
+  display: flex; flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  opacity: 0; transform: translateY(14px);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.post-card.visible {
+  opacity: 1; transform: none;
+  transition: opacity 0.48s ease, transform 0.48s ease, border-color 0.25s, box-shadow 0.25s;
+}
+.post-card:hover { border-color: var(--accent-mid); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.07); }
+
+.post-card-top { padding: 24px 24px 0; display: flex; align-items: flex-start; justify-content: space-between; }
+.post-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 100px;
+}
+.tag-myslenky  { background: var(--accent-dim); color: var(--accent); border: 0.5px solid var(--accent-mid); }
+.tag-zapisky   { background: rgba(15,15,14,0.04); color: var(--dim); border: 0.5px solid var(--border); }
+.tag-povidky   { background: rgba(16,185,129,0.08); color: #059669; border: 0.5px solid rgba(16,185,129,0.22); }
+.tag-hudba     { background: rgba(239,68,68,0.07); color: #dc2626; border: 0.5px solid rgba(239,68,68,0.2); }
+.post-date { font-size: 10px; letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; font-weight: 500; }
+
+.post-card-body { padding: 14px 24px 24px; flex: 1; display: flex; flex-direction: column; }
+.post-title {
+  font-family: 'Fraunces', serif; font-optical-sizing: auto;
+  font-size: 20px; font-weight: 700; font-style: italic;
+  line-height: 1.2; margin-bottom: 10px; letter-spacing: -0.01em;
+}
+.post-excerpt { font-size: 13px; color: var(--dim); line-height: 1.65; font-weight: 300; flex: 1; }
+
+.post-footer {
+  padding: 13px 24px; border-top: 0.5px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.post-author { font-size: 11px; color: var(--muted); font-weight: 400; }
+.post-read {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); display: flex; align-items: center; gap: 5px; transition: gap 0.2s;
+}
+.post-card:hover .post-read { gap: 8px; }
+
+.post-like {
+  display: flex; align-items: center; gap: 5px; background: none;
+  border: 0.5px solid var(--border); border-radius: 100px;
+  padding: 4px 10px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 600; color: var(--dim); transition: all 0.2s;
+}
+.post-like:hover { border-color: var(--accent-mid); color: var(--accent); }
+.post-like.liked { background: var(--accent-dim); border-color: var(--accent-mid); color: var(--accent); }
+.post-like .like-icon { font-size: 12px; line-height: 1; transition: transform 0.15s; }
+.post-like:hover .like-icon, .post-like.liked .like-icon { transform: scale(1.2); }
+
+.posts-empty { grid-column: 1/-1; text-align: center; padding: 80px 20px; }
+.posts-empty-letter {
+  font-family: 'Fraunces', serif; font-optical-sizing: auto;
+  font-size: 100px; font-style: italic; font-weight: 700;
+  color: var(--accent-dim); margin-bottom: 16px; line-height: 1;
+}
+.posts-empty-text { font-size: 15px; color: var(--muted); font-weight: 300; }
+
+/* ===== NEWSLETTER STRIP ===== */
+.nl-strip {
+  background: var(--bg2); border-top: 0.5px solid var(--border);
+  padding: 64px 80px; display: flex; align-items: center; justify-content: space-between; gap: 48px;
+}
+.nl-title {
+  font-family: 'Fraunces', serif; font-optical-sizing: auto;
+  font-size: clamp(20px,2.6vw,32px); font-weight: 700; font-style: italic;
+}
+.nl-title em { font-style: normal; color: var(--accent); }
+.nl-sub { font-size: 13px; color: var(--dim); margin-top: 8px; font-weight: 300; }
+.nl-form { display: flex; gap: 10px; min-width: 320px; }
+.nl-input {
+  flex: 1; background: #fff; border: 0.5px solid var(--border); border-radius: 8px;
+  padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text);
+  outline: none; transition: border-color 0.2s;
+}
+.nl-input::placeholder { color: var(--muted); }
+.nl-input:focus { border-color: var(--accent-mid); }
+.nl-btn {
+  background: var(--accent); color: #fff; padding: 12px 20px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  cursor: pointer; border: none; transition: opacity 0.2s; white-space: nowrap;
+}
+.nl-btn:hover { opacity: 0.82; }
+
+/* ===== FOOTER ===== */
+footer {
+  border-top: 0.5px solid var(--border); padding: 26px 80px;
+  display: flex; align-items: center; justify-content: space-between; background: var(--bg);
+}
+.footer-logo {
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-style: italic;
+  font-weight: 800; color: var(--accent); letter-spacing: -0.035em; opacity: 0.65;
+  text-decoration: none;
+}
+.footer-copy { font-size: 11px; color: var(--muted); }
+.footer-lnk {
+  font-size: 11px; color: var(--dim); text-decoration: none;
+  letter-spacing: 0.07em; text-transform: uppercase; transition: color 0.2s; font-weight: 600;
+}
+.footer-lnk:hover { color: var(--accent); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  #nav { padding: 0 40px; }
+  .page-header { padding: 120px 40px 50px; }
+  .filter-bar { padding: 20px 40px; }
+  .posts-wrap { padding: 44px 40px 80px; }
+  .posts-grid { grid-template-columns: 1fr 1fr; }
+  .nl-strip { flex-direction: column; padding: 48px 40px; }
+  .nl-form { min-width: unset; width: 100%; }
+  footer { padding: 24px 40px; }
+}
+@media (max-width: 640px) {
+  #nav { padding: 0 20px; }
+  .page-header { padding: 100px 24px 40px; }
+  .filter-bar { padding: 16px 24px; }
+  .posts-wrap { padding: 28px 24px 60px; }
+  .posts-grid { grid-template-columns: 1fr; }
+  .nl-strip { padding: 40px 24px; }
+  .nl-form { flex-direction: column; }
+  footer { padding: 20px 24px; flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="nav-logo" href="romanpavlorek_v4.html">RP</a>
+  <div class="nav-links">
+    <a class="nav-lnk active" href="blog-personal.html" data-cs="Zápisky" data-en="Notes">Zápisky</a>
+    <a class="nav-lnk" href="romanpavlorek_v4.html" data-cs="← Roman Pavlorek" data-en="← Roman Pavlorek">← Roman Pavlorek</a>
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="cs" onclick="setLang('cs')">CS</button>
+      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="ph-eyebrow" data-cs="Osobní blog · Roman Pavlorek" data-en="Personal blog · Roman Pavlorek">Osobní blog · Roman Pavlorek</div>
+  <h1 class="ph-title"><span data-cs="Zápisky" data-en="Notes">Zápisky</span><br><span data-cs="a " data-en="and ">a </span><em><span data-cs="myšlenky." data-en="thoughts.">myšlenky.</span></em></h1>
+  <p class="ph-sub" data-cs="Zvědavost, otázky, postřehy. Nepíšu o tom, co vím — píšu o tom, co mě zajímá." data-en="Curiosity, questions, observations. I don't write about what I know — I write about what interests me.">Zvědavost, otázky, postřehy. Nepíšu o tom, co vím — píšu o tom, co mě zajímá.</p>
+</div>
+
+<div class="filter-bar">
+  <button class="f-btn active" data-filter="all" data-cs="Vše" data-en="All">Vše</button>
+  <button class="f-btn" data-filter="myslenky" data-cs="Myšlenky" data-en="Thoughts">Myšlenky</button>
+  <button class="f-btn" data-filter="zapisky" data-cs="Zápisky" data-en="Notes">Zápisky</button>
+  <button class="f-btn" data-filter="povidky" data-cs="Povídky" data-en="Stories">Povídky</button>
+  <button class="f-btn" data-filter="hudba" data-cs="Hudba" data-en="Music">Hudba</button>
+</div>
+
+<div class="posts-wrap">
+  <div class="posts-grid" id="posts-grid">
+
+    <!--
+    ================================================================
+    BOT TEMPLATE — copy and fill in below:
+    Categories: myslenky | zapisky | povidky | hudba
+    ================================================================
+    <a class="post-card" href="blog-post-personal-[ID].html" data-cat="[cat]" data-post-id="[ID]">
+      <div class="post-card-top">
+        <span class="post-tag tag-[cat]" data-cs="[CZ]" data-en="[EN]">[CZ]</span>
+        <span class="post-date">[DD. MM. YYYY]</span>
+      </div>
+      <div class="post-card-body">
+        <div class="post-title" data-cs="[TITULEK CZ]" data-en="[TITLE EN]">[TITULEK CZ]</div>
+        <div class="post-excerpt" data-cs="[POPIS CZ]" data-en="[EXCERPT EN]">[POPIS CZ]</div>
+      </div>
+      <div class="post-footer">
+        <button class="post-like" onclick="toggleLike(event,'[ID]')" aria-label="Like">
+          <span class="like-icon">♡</span><span class="like-count">0</span>
+        </button>
+        <span class="post-read" data-cs="Číst →" data-en="Read →">Číst →</span>
+      </div>
+    </a>
+    ================================================================
+    -->
+
+    <div class="posts-empty">
+      <div class="posts-empty-letter">?</div>
+      <div class="posts-empty-text" data-cs="Brzy první zápisky…" data-en="First notes coming soon…">Brzy první zápisky…</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="nl-strip">
+  <div>
+    <div class="nl-title"><em><span data-cs="Nový zápis?" data-en="New entry?">Nový zápis?</span></em><br><span data-cs="Hned víš." data-en="You'll know.">Hned víš.</span></div>
+    <div class="nl-sub" data-cs="Email při novém zápisku. Bez spamu." data-en="Email with every new entry. No spam.">Email při novém zápisku. Bez spamu.</div>
+  </div>
+  <form id="nl-form" onsubmit="submitNl(event)">
+    <div class="nl-form">
+      <input class="nl-input" type="email" id="nl-email" data-placeholder-cs="váš@email.cz" data-placeholder-en="your@email.com" placeholder="váš@email.cz" required>
+      <button class="nl-btn" type="submit" data-cs="Přihlásit" data-en="Subscribe">Přihlásit</button>
+    </div>
+  </form>
+</div>
+
+<footer>
+  <a href="romanpavlorek_v4.html" class="footer-logo">RP</a>
+  <div class="footer-copy">© 2026 Roman Pavlorek</div>
+  <a class="footer-lnk" href="romanpavlorek_v4.html" data-cs="← Roman Pavlorek" data-en="← Roman Pavlorek">← Roman Pavlorek</a>
+</footer>
+
+<script>
+/* ===== LANGUAGE ===== */
+const LANG_KEY = 'rp-lang';
+let currentLang = localStorage.getItem(LANG_KEY) || 'cs';
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem(LANG_KEY, lang);
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-cs]').forEach(el => {
+    if (el.dataset[lang]) el.textContent = el.dataset[lang];
+  });
+  document.querySelectorAll('[data-placeholder-cs]').forEach(el => {
+    el.placeholder = lang === 'en' ? (el.dataset.placeholderEn || '') : (el.dataset.placeholderCs || '');
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+}
+
+setLang(currentLang);
+
+/* ===== LIKES ===== */
+const LIKES_KEY = 'rp-blog-likes';
+function getLikes() { try { return JSON.parse(localStorage.getItem(LIKES_KEY)) || {}; } catch(e) { return {}; } }
+
+function toggleLike(e, postId) {
+  e.preventDefault(); e.stopPropagation();
+  const btn = e.currentTarget;
+  const likes = getLikes();
+  if (likes[postId]) { delete likes[postId]; } else { likes[postId] = 1; }
+  localStorage.setItem(LIKES_KEY, JSON.stringify(likes));
+  applyLikeState(btn, postId, likes);
+}
+
+function applyLikeState(btn, postId, likes) {
+  const liked = !!likes[postId];
+  btn.classList.toggle('liked', liked);
+  const icon = btn.querySelector('.like-icon');
+  const count = btn.querySelector('.like-count');
+  if (icon) icon.textContent = liked ? '♥' : '♡';
+  if (count) { const base = parseInt(btn.dataset.baseCount || '0', 10); count.textContent = liked ? base + 1 : base; }
+}
+
+function initLikes() {
+  const likes = getLikes();
+  document.querySelectorAll('.post-like').forEach(btn => {
+    const card = btn.closest('[data-post-id]');
+    if (!card) return;
+    const postId = card.dataset.postId;
+    const countEl = btn.querySelector('.like-count');
+    if (countEl) btn.dataset.baseCount = countEl.textContent || '0';
+    applyLikeState(btn, postId, likes);
+  });
+}
+initLikes();
+
+/* ===== FILTER ===== */
+let currentFilter = 'all';
+document.querySelectorAll('.f-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentFilter = btn.dataset.filter;
+    document.querySelectorAll('.f-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === currentFilter));
+    document.querySelectorAll('.post-card[data-cat]').forEach(card => {
+      card.style.display = (currentFilter === 'all' || card.dataset.cat === currentFilter) ? '' : 'none';
+    });
+  });
+});
+
+/* ===== SCROLL REVEAL ===== */
+const cardObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); cardObserver.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.post-card').forEach((c, i) => {
+  c.style.transitionDelay = (i % 3) * 80 + 'ms';
+  cardObserver.observe(c);
+});
+
+/* ===== NEWSLETTER ===== */
+const NL_URL = 'https://n8n.romanpavlorek.eu/webhook/newsletter';
+async function submitNl(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.nl-btn');
+  const email = document.getElementById('nl-email').value;
+  const sending = currentLang === 'en' ? 'Sending…' : 'Odesílám…';
+  const ok = currentLang === 'en' ? '✓ Subscribed!' : '✓ Přihlášen!';
+  const err = currentLang === 'en' ? 'Error — try again' : 'Chyba — zkus znovu';
+  btn.textContent = sending; btn.disabled = true;
+  try {
+    await fetch(NL_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, source: 'blog-personal', lang: currentLang }) });
+    btn.textContent = ok;
+    document.getElementById('nl-email').value = '';
+  } catch {
+    btn.textContent = err; btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
