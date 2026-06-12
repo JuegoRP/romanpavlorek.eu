@@ -1,22 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
   <defs>
-    <linearGradient id="pg" x1="20" y1="15" x2="80" y2="85" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#c084fc"/>
-      <stop offset=".5" stop-color="#a855f7"/>
-      <stop offset="1" stop-color="#22d3ee"/>
+    <linearGradient id="pg" x1="18" y1="18" x2="82" y2="78" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c084fc"/><stop offset=".5" stop-color="#a855f7"/><stop offset="1" stop-color="#22d3ee"/>
     </linearGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="2.2" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feGaussianBlur stdDeviation="2.1" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
-  <g filter="url(#glow)" stroke="url(#pg)" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round">
-    <!-- maska / trojuhelnik -->
-    <path d="M50 16 L84 76 H16 Z"/>
-    <!-- oci (LED) -->
-    <path d="M37 49 l6 -5 6 5" transform="translate(-6 0)"/>
-    <path d="M37 49 l6 -5 6 5" transform="translate(12 0)"/>
-    <!-- usta = vlnovka (one wave) -->
-    <path d="M30 62 q5 -7 10 0 t10 0 t10 0" fill="none"/>
+  <g filter="url(#glow)" stroke="url(#pg)" stroke-width="4.4" stroke-linejoin="round" stroke-linecap="round">
+    <!-- otevreny trojuhelnik: jen dve strany -->
+    <path d="M18 76 L50 18 L82 76"/>
+    <!-- LED oci -->
+    <path d="M40 52 l4.5 -4 4.5 4" transform="translate(-9 0)"/>
+    <path d="M40 52 l4.5 -4 4.5 4" transform="translate(9 0)"/>
+    <!-- vlnovka jako 'zakladna' (one wave) -->
+    <path d="M23 70 q6 -8 12 0 t12 0 t12 0"/>
   </g>
 </svg>

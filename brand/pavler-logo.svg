@@ -1,19 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 150" fill="none" font-family="'Arial Black','Arial',sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 150" fill="none" font-family="'Arial Black','Arial',sans-serif">
   <defs>
     <linearGradient id="pg2" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#c084fc"/><stop offset=".5" stop-color="#a855f7"/><stop offset="1" stop-color="#22d3ee"/>
     </linearGradient>
     <filter id="g2" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
-  <g filter="url(#g2)" stroke="url(#pg2)" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" transform="translate(8 18)">
-    <path d="M55 8 L96 78 H14 Z"/>
-    <path d="M37 49 l6 -5 6 5" transform="translate(-3 2)"/>
-    <path d="M37 49 l6 -5 6 5" transform="translate(15 2)"/>
-    <path d="M33 62 q5 -7 10 0 t10 0 t10 0"/>
+  <g filter="url(#g2)" stroke="url(#pg2)" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round" transform="translate(10 14)">
+    <path d="M14 80 L52 12 L90 80"/>
+    <path d="M40 52 l5 -4.5 5 4.5" transform="translate(-12 1)"/>
+    <path d="M40 52 l5 -4.5 5 4.5" transform="translate(10 1)"/>
+    <path d="M20 73 q7 -9 14 0 t14 0 t14 0"/>
   </g>
-  <text x="135" y="92" font-size="74" font-weight="900" font-style="italic" letter-spacing="2"
-        fill="#f5f3ff" transform="skewX(-7)">PAVLER</text>
-  <text x="138" y="120" font-size="15" font-weight="700" letter-spacing="7" fill="url(#pg2)">THREE VOICES · ONE WAVE</text>
+  <!-- glitch wordmark: magenta + cyan posun + bila -->
+  <g transform="skewX(-9)" font-size="72" font-weight="900" font-style="italic" letter-spacing="1">
+    <text x="151" y="88" fill="#ec4899" opacity=".85">PAVLER</text>
+    <text x="147" y="86" fill="#22d3ee" opacity=".85">PAVLER</text>
+    <text x="149" y="87" fill="#f5f3ff">PAVLER</text>
+  </g>
+  <text x="152" y="118" font-size="14" font-weight="800" letter-spacing="5.5" fill="url(#pg2)">3 ENTITY · 2 HLASY · 1 VLNA</text>
 </svg>
