@@ -662,11 +662,7 @@ a.tag:hover, .tag.active { background: var(--accent-dim); border-color: var(--ac
       <p class="s-body" data-cs="Nezabývám se vědou — zabývám se zvědavostí. Sem si zapisuji myšlenky, postřehy a otázky, které mě drží v pohybu." data-en="I'm not a scientist — I'm curious. This is where I note down thoughts, observations and questions that keep me going.">Nezabývám se vědou — zabývám se zvědavostí. Sem si zapisuji myšlenky, postřehy a otázky, které mě drží v pohybu.</p>
 
       <div class="thought-posts" id="thought-list">
-        <a class="thought-post" href="blog-post-personal-1.html">
-          <span class="thought-date">12. 6. 2026</span>
-          <span class="thought-title" data-cs="Co vlastně dělám — a proč to nevzdávám" data-en="What I actually do — and why I don't quit">Co vlastně dělám — a proč to nevzdávám</span>
-          <span class="thought-arr">↗</span>
-        </a>
+        <div class="thought-empty" data-cs="Brzy první zápisky…" data-en="First notes coming soon…">Brzy první zápisky…</div>
       </div>
 
       <a class="blog-card" href="blog-personal.html">
@@ -694,8 +690,8 @@ a.tag:hover, .tag.active { background: var(--accent-dim); border-color: var(--ac
       </form>
 
       <div class="contact-links">
-        <a class="c-link" href="/cdn-cgi/l/email-protection#d3a1bcbeb2bd93a1bcbeb2bda3b2a5bfbca1b6b8fdb6a6">
-          <span class="c-link-label" data-cs="Email" data-en="Email">Email</span> <span class="__cf_email__" data-cfemail="9ceef3f1fdf2dceef3f1fdf2ecfdeaf0f3eef9f7b2f9e9">[email&#160;protected]</span>
+        <a class="c-link" href="mailto:roman@romanpavlorek.eu">
+          <span class="c-link-label" data-cs="Email" data-en="Email">Email</span> roman@romanpavlorek.eu
         </a>
         <a class="c-link" href="https://3rstudio.eu/">
           <span class="c-link-label" data-cs="Studio" data-en="Studio">Studio</span> 3rstudio.eu
@@ -724,7 +720,7 @@ a.tag:hover, .tag.active { background: var(--accent-dim); border-color: var(--ac
   <div class="now-text" data-cs="Finalizuji CONFLUX a Gream. Píšu Paletu. Nahrávám Spektrum barev." data-en="Finalising CONFLUX and Gream. Writing Paleta. Recording Spektrum barev.">Finalizuji CONFLUX a Gream. Píšu Paletu. Nahrávám Spektrum barev.</div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ===== LANGUAGE ===== */
 const LANG_KEY = 'rp-lang';
 let currentLang = localStorage.getItem(LANG_KEY) || 'cs';
