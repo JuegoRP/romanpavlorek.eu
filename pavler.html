@@ -166,7 +166,7 @@
   .hero {
     min-height: 100vh;
     display: flex; flex-direction: column;
-    justify-content: center; align-items: flex-start;
+    justify-content: center; align-items: center; text-align: center;
     padding: 100px clamp(24px, 8vw, 100px) 80px;
     position: relative;
     overflow: hidden;
@@ -222,12 +222,12 @@
   }
 
   .hero-desc {
-    max-width: 520px;
+    max-width: 520px; margin: 0 auto;
     position: relative; z-index: 2;
   }
 
   .hero-genre {
-    display: flex; flex-wrap: wrap; gap: 8px;
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
     margin-bottom: 20px;
   }
   .genre-tag {
@@ -247,7 +247,7 @@
   }
 
   .hero-cta {
-    display: flex; gap: 12px; flex-wrap: wrap;
+    display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
   }
   .btn-primary {
     display: inline-flex; align-items: center; gap: 8px;
@@ -520,12 +520,10 @@
 <section class="hero">
   <div class="hero-bg"></div>
 
-  <img src="pavler-mark.svg" alt="Pavler" width="96" height="96" style="display:block;margin:0 auto 20px;filter:drop-shadow(0 0 20px rgba(168,85,247,.55));">
-
-  <p class="hero-eyebrow" data-cs="Hudební alias · Elektronická produkce · 3 entity, 2 hlasy a 1 vlna" data-en="Music alias · Electronic production · 3 entities, 2 voices, 1 wave">Hudební alias · Elektronická produkce · 3 entity, 2 hlasy a 1 vlna</p>
+  <p class="hero-eyebrow" data-cs="Hudební alias · Elektronická produkce" data-en="Music alias · Electronic production">Hudební alias · Elektronická produkce</p>
 
   <div class="hero-name">
-    <span class="glitch-wrap" data-text="PAVLER">PAVLER</span>
+    <img src="pavler-logo.svg?v=3" alt="PAVLER — 3 entity, 2 hlasy, 1 vlna" style="display:block;width:min(620px,90vw);height:auto;margin:0 auto;filter:drop-shadow(0 0 26px rgba(168,85,247,.4));">
   </div>
 
   <div class="hero-desc">
