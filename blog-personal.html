@@ -108,8 +108,10 @@ body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-s
   display: flex; flex-direction: column;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   opacity: 0; transform: translateY(14px);
+  animation: cardIn 0.5s ease forwards 0.12s;
   transition: border-color 0.25s, box-shadow 0.25s;
 }
+@keyframes cardIn { to { opacity: 1; transform: none; } }
 .post-card.visible {
   opacity: 1; transform: none;
   transition: opacity 0.48s ease, transform 0.48s ease, border-color 0.25s, box-shadow 0.25s;
