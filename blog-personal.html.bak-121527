@@ -287,22 +287,10 @@ footer {
     ================================================================
     -->
 
-    <a class="post-card" href="blog-post-personal-1.html" data-cat="zapisky" data-post-id="1">
-      <div class="post-card-top">
-        <span class="post-tag tag-zapisky" data-cs="Zápisky" data-en="Notes">Zápisky</span>
-        <span class="post-date">12. 6. 2026</span>
-      </div>
-      <div class="post-card-body">
-        <div class="post-title" data-cs="Co vlastně dělám — a proč to nevzdávám" data-en="What I actually do — and why I don't quit">Co vlastně dělám — a proč to nevzdávám</div>
-        <div class="post-excerpt" data-cs="Dělám hry, hudbu, píšu knihu, přemýšlím o fyzice. Lidi říkají: vyber si jedno. Proč to nedělám." data-en="I make games, music, write a book, think about physics. People say: pick one. Why I don't.">Dělám hry, hudbu, píšu knihu, přemýšlím o fyzice. Lidi říkají: vyber si jedno. Proč to nedělám.</div>
-      </div>
-      <div class="post-footer">
-        <button class="post-like" onclick="toggleLike(event,'1')" aria-label="Like">
-          <span class="like-icon">♡</span><span class="like-count">0</span>
-        </button>
-        <span class="post-read" data-cs="Číst →" data-en="Read →">Číst →</span>
-      </div>
-    </a>
+    <div class="posts-empty">
+      <div class="posts-empty-letter">?</div>
+      <div class="posts-empty-text" data-cs="Brzy první zápisky…" data-en="First notes coming soon…">Brzy první zápisky…</div>
+    </div>
 
   </div>
 </div>
