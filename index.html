@@ -241,10 +241,10 @@ a.tag:hover, .tag.active { background: var(--accent-dim); border-color: var(--ac
 }
 
 /* ===== MUSIC TABS ===== */
-.music-tabs { display: inline-flex; align-items: center; gap: 2px; background: rgba(15,15,14,0.04); border: 0.5px solid var(--border); border-radius: 8px; padding: 3px; margin-bottom: 28px; }
-.music-tab-btn { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 16px; border-radius: 6px; border: none; background: none; color: var(--muted); cursor: pointer; transition: all 0.2s; }
-.music-tab-btn:hover { color: var(--text); }
-.music-tab-btn.active { background: var(--accent); color: #fff; }
+.music-tabs, .proj-tabs { display: inline-flex; align-items: center; gap: 2px; background: rgba(15,15,14,0.04); border: 0.5px solid var(--border); border-radius: 8px; padding: 3px; margin-bottom: 28px; }
+.music-tab-btn, .proj-tab-btn { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 16px; border-radius: 6px; border: none; background: none; color: var(--muted); cursor: pointer; transition: all 0.2s; }
+.music-tab-btn:hover, .proj-tab-btn:hover { color: var(--text); }
+.music-tab-btn.active, .proj-tab-btn.active { background: var(--accent); color: #fff; }
 
 .music-panel { display: none; }
 .music-panel.active { display: block; }
@@ -294,6 +294,16 @@ a.tag:hover, .tag.active { background: var(--accent-dim); border-color: var(--ac
   color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05);
   border: 0.5px solid rgba(255,255,255,0.1); padding: 3px 9px; border-radius: 100px;
 }
+
+/* ===== PROJ TABS + RVBOT CARD ===== */
+.proj-panel { display: none; }
+.proj-panel.active { display: block; }
+.album-card, .pavler-card, .rvbot-card { min-height: 184px; box-sizing: border-box; }
+.rvbot-card { display:block; background:#0c1116; border:0.5px solid rgba(10,255,203,0.18); border-radius: var(--r-xl); padding:26px 30px; max-width:500px; margin-bottom:20px; text-decoration:none; transition:border-color .25s, box-shadow .25s; }
+.rvbot-card:hover { border-color:rgba(10,255,203,0.4); box-shadow:0 6px 22px rgba(10,255,203,0.12); }
+.rvbot-eyebrow { font-size:9px; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:rgba(10,255,203,0.7); margin-bottom:10px; }
+.rvbot-name { font-family:'Fraunces',serif; font-size:28px; font-weight:700; font-style:italic; letter-spacing:-0.02em; color:#eef2f5; margin-bottom:8px; }
+.rvbot-desc { font-size:13px; color:rgba(238,242,245,0.5); line-height:1.7; font-weight:300; margin-bottom:16px; }
 
 /* ===== STUDIO SECTION ===== */
 .studio-badge { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 28px; }
@@ -556,7 +566,7 @@ a.tag:hover, .tag.active { background: var(--accent-dim); border-color: var(--ac
 
       <!-- Roman panel -->
       <div class="music-panel active" id="music-roman">
-        <div class="album-card">
+        <div class="album-card" style="cursor:pointer" onclick="location.href='roman-music.html'">
           <div class="album-cover">
             <img src="21CDAC0A-9FB1-4540-9FDB-7F2680ACB245.PNG" alt="Spektrum barev">
           </div>
@@ -579,7 +589,7 @@ a.tag:hover, .tag.active { background: var(--accent-dim); border-color: var(--ac
 
       <!-- Pavler panel -->
       <div class="music-panel" id="music-pavler">
-        <div class="pavler-card">
+        <div class="pavler-card" style="cursor:pointer" onclick="location.href='pavler.html'">
           <div class="pavler-eyebrow" data-cs="AI Produkce · Viral" data-en="AI Production · Viral">AI Produkce · Viral</div>
           <div class="pavler-name">Pavler</div>
           <div class="pavler-desc" data-cs="Hyperpop, phonk a experimentální produkce generovaná s AI. Projekt zaměřený na digitální distribuci a virální dosah." data-en="Hyperpop, phonk and experimental AI-generated production. Focused on digital distribution and viral reach.">Hyperpop, phonk a experimentální produkce generovaná s AI. Projekt zaměřený na digitální distribuci a virální dosah.</div>
@@ -600,43 +610,42 @@ a.tag:hover, .tag.active { background: var(--accent-dim); border-color: var(--ac
 
     <!-- 2: STUDIO -->
     <section class="section" id="sec-2">
-      <div class="s-label" data-cs="3R Studio · Projekty" data-en="3R Studio · Projects">3R Studio · Projekty</div>
-      <h2 class="s-title"><span data-cs="Stavím" data-en="Building">Stavím</span><br><em><span data-cs="světy." data-en="worlds.">světy.</span></em></h2>
-      <p class="s-body" data-cs="Nezávislé studio, které jsem založil v roce 2026. Hry, aplikace a experimenty — jeden člověk, automatizace a hodně zvědavosti." data-en="An indie studio I founded in 2026. Games, apps and experiments — one person, automation and a lot of curiosity.">Nezávislé studio, které jsem založil v roce 2026. Hry, aplikace a experimenty — jeden člověk, automatizace a hodně zvědavosti.</p>
+      <div class="s-label" data-cs="Projekty" data-en="Projects">Projekty</div>
+      <h2 class="s-title"><span data-cs="Stavím" data-en="Building">Stavím</span><br><em><span data-cs="věci." data-en="things.">věci.</span></em></h2>
+      <p class="s-body" data-cs="Dvě věci, na kterých dělám: 3R Studio (hry a appky, sólo) a RVbot (nástroje pro průmysl, ve dvou)." data-en="Two things I work on: 3R Studio (games and apps, solo) and RVbot (industrial tools, a team of two).">Dvě věci, na kterých dělám: 3R Studio (hry a appky, sólo) a RVbot (nástroje pro průmysl, ve dvou).</p>
 
-      <div class="studio-badge">
-        <span class="studio-mark">3R</span>
-        <span class="studio-label">Studio</span>
+      <div class="proj-tabs">
+        <button class="proj-tab-btn active" onclick="switchProjTab('studio', this)">3R Studio</button>
+        <button class="proj-tab-btn" onclick="switchProjTab('rvbot', this)">RVbot</button>
       </div>
 
-      <div class="proj-pair">
-        <a class="pr-card" href="https://3rstudio.eu/conflux.html">
-          <div class="pr-dot amber"></div>
-          <div class="pr-name">CONFLUX</div>
-          <div class="pr-type" data-cs="Karetní hra · PC" data-en="Card Game · PC">Karetní hra · PC</div>
-          <div class="pr-desc" data-cs="Narativní karetní hra s větvícím příběhem. Launch srpen 2026." data-en="Narrative card game with a branching story. Launch August 2026.">Narativní karetní hra s větvícím příběhem. Launch srpen 2026.</div>
-        </a>
-        <a class="pr-card" href="https://3rstudio.eu/gream.html">
-          <div class="pr-dot teal"></div>
-          <div class="pr-name">Gream</div>
-          <div class="pr-type" data-cs="Vzdělávání · Mobile" data-en="Education · Mobile">Vzdělávání · Mobile</div>
-          <div class="pr-desc" data-cs="Vzdělávací hra pro děti. App Store + Play, 2026." data-en="Educational game for kids. App Store + Play, 2026.">Vzdělávací hra pro děti. App Store + Play, 2026.</div>
-        </a>
+      <div class="proj-panel active" id="proj-studio">
+        <div class="studio-badge"><span class="studio-mark">3R</span><span class="studio-label" data-cs="Studio" data-en="Studio">Studio</span></div>
+        <div class="proj-pair">
+          <a class="pr-card" href="https://3rstudio.eu/conflux.html">
+            <div class="pr-dot amber"></div>
+            <div class="pr-name">CONFLUX</div>
+            <div class="pr-type" data-cs="Karetní hra · PC" data-en="Card Game · PC">Karetní hra · PC</div>
+            <div class="pr-desc" data-cs="Narativní karetní hra s větvícím příběhem. Launch srpen 2026." data-en="Narrative card game with a branching story. Launch August 2026.">Narativní karetní hra s větvícím příběhem. Launch srpen 2026.</div>
+          </a>
+          <a class="pr-card" href="https://3rstudio.eu/gream.html">
+            <div class="pr-dot teal"></div>
+            <div class="pr-name">Gream</div>
+            <div class="pr-type" data-cs="Vzdělávání · Mobile" data-en="Education · Mobile">Vzdělávání · Mobile</div>
+            <div class="pr-desc" data-cs="Vzdělávací hra pro děti. App Store + Play, 2026." data-en="Educational game for kids. App Store + Play, 2026.">Vzdělávací hra pro děti. App Store + Play, 2026.</div>
+          </a>
+        </div>
+        <div class="tags"><a class="tag" href="https://3rstudio.eu/" data-cs="Všechny projekty →" data-en="All projects →">Všechny projekty →</a></div>
       </div>
 
-      <p class="s-body" data-cs="A druhý projekt, na kterém dělám — tentokrát ne sám, ale ve dvou: RVbot. Nástroje pro integraci průmyslových robotů a PLC." data-en="And a second venture I work on — not solo this time, but as a team of two: RVbot. Tools for industrial robot–PLC integration." style="margin-top:18px">A druhý projekt, na kterém dělám — tentokrát ne sám, ale ve dvou: RVbot. Nástroje pro integraci průmyslových robotů a PLC.</p>
-      <div class="proj-pair" style="margin-top:8px">
-        <a class="pr-card" href="https://rvbot.eu">
-          <div class="pr-dot teal"></div>
-          <div class="pr-name">RVbot</div>
-          <div class="pr-type" data-cs="Automatizace · B2B" data-en="Automation · B2B">Automatizace · B2B</div>
-          <div class="pr-desc" data-cs="Integrace robotů a PLC bez chaosu. Vlajková loď: Axon. → rvbot.eu" data-en="Robot & PLC integration without chaos. Flagship: Axon. → rvbot.eu">Integrace robotů a PLC bez chaosu. Vlajková loď: Axon. → rvbot.eu</div>
+      <div class="proj-panel" id="proj-rvbot">
+        <a class="rvbot-card" href="https://rvbot.eu">
+          <div class="rvbot-eyebrow" data-cs="Automatizace · B2B · ve dvou" data-en="Automation · B2B · team of two">Automatizace · B2B · ve dvou</div>
+          <div class="rvbot-name">RVbot</div>
+          <div class="rvbot-desc" data-cs="Nástroje pro integraci průmyslových robotů a PLC — bez chaosu v signálech. Vlajková loď: Axon, generátor dokumentace rozhraní." data-en="Tools for industrial robot–PLC integration — without the signal chaos. Flagship: Axon, an interface documentation generator.">Nástroje pro integraci průmyslových robotů a PLC — bez chaosu v signálech. Vlajková loď: Axon, generátor dokumentace rozhraní.</div>
+          <div class="pavler-chips"><span class="pavler-chip">Robot–PLC</span><span class="pavler-chip">Axon</span><span class="pavler-chip">B2B</span></div>
         </a>
-      </div>
-
-      <div class="tags">
-        <a class="tag" href="https://3rstudio.eu/" data-cs="Všechny projekty →" data-en="All projects →">Všechny projekty →</a>
-        <a class="tag" href="https://rvbot.eu" data-cs="RVbot →" data-en="RVbot →">RVbot →</a>
+        <div class="tags"><a class="tag" href="https://rvbot.eu" data-cs="rvbot.eu →" data-en="rvbot.eu →">rvbot.eu →</a></div>
       </div>
     </section>
 
@@ -752,6 +761,7 @@ function setLang(lang) {
 setLang(currentLang);
 
 /* ===== MUSIC TABS ===== */
+function switchProjTab(tab, btn){ document.querySelectorAll("#sec-2 .proj-panel").forEach(function(p){p.classList.remove("active")}); document.querySelectorAll("#sec-2 .proj-tab-btn").forEach(function(b){b.classList.remove("active")}); var el=document.getElementById("proj-"+tab); if(el)el.classList.add("active"); btn.classList.add("active"); }
 function switchMusicTab(tab, btn) {
   document.querySelectorAll('.music-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.music-tab-btn').forEach(b => b.classList.remove('active'));
