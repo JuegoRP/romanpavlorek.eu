@@ -12,6 +12,8 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', { ad_storage:'denied', ad_user_data:'denied', ad_personalization:'denied', analytics_storage:'denied' });
+  if ((document.cookie.split('; ').find(function(r){return r.indexOf('cookie-consent=')===0;})||'').slice(-4)==='=yes') { gtag('consent','update',{ analytics_storage:'granted' }); }
   gtag('js', new Date());
   gtag('config', 'G-GCGW0QR7JN');
 </script>
@@ -44,7 +46,7 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; background: #f5f3ff; scrollbar-width: none; }
+html { scroll-behavior: auto; scroll-snap-type: y proximity; background: #f5f3ff; scrollbar-width: none; }
 html::-webkit-scrollbar { display: none; }
 body { background: transparent; color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
 
@@ -157,7 +159,7 @@ body { background: transparent; color: var(--text); font-family: 'DM Sans', sans
 
 /* ===== SECTIONS ===== */
 .section {
-  min-height: 100vh; display: flex; flex-direction: column;
+  min-height: 100vh; min-height: 100svh; scroll-snap-align: start; display: flex; flex-direction: column;
   justify-content: center; align-items: center;
   padding: 100px 96px 80px; position: relative;
 }
@@ -518,7 +520,7 @@ a.tag:hover, .tag.active { background: var(--accent-dim); border-color: var(--ac
     <nav class="nav-wrap">
       <div class="s-nav active" data-sec="0" data-cs="Úvod" data-en="Intro">Úvod</div>
       <div class="s-nav" data-sec="1" data-cs="Hudba" data-en="Music">Hudba</div>
-      <div class="s-nav" data-sec="2" data-cs="Studio" data-en="Studio">Studio</div>
+      <div class="s-nav" data-sec="2" data-cs="Projekty" data-en="Projects">Projekty</div>
       <div class="s-nav" data-sec="3" data-cs="Příběhy" data-en="Stories">Příběhy</div>
       <div class="s-nav" data-sec="4" data-cs="Zápisky" data-en="Notes">Zápisky</div>
       <div class="s-nav" data-sec="5" data-cs="Kontakt" data-en="Contact">Kontakt</div>
@@ -626,13 +628,13 @@ a.tag:hover, .tag.active { background: var(--accent-dim); border-color: var(--ac
             <div class="pr-dot amber"></div>
             <div class="pr-name">CONFLUX</div>
             <div class="pr-type" data-cs="Karetní hra · PC" data-en="Card Game · PC">Karetní hra · PC</div>
-            <div class="pr-desc" data-cs="Narativní karetní hra s větvícím příběhem. Launch srpen 2026." data-en="Narrative card game with a branching story. Launch August 2026.">Narativní karetní hra s větvícím příběhem. Launch srpen 2026.</div>
+            <div class="pr-desc" data-cs="Konflikt frakcí a neznáma — a hledání sebe sama. Ještě ve vývoji, vychází na konci roku 2026." data-en="Factions and the unknown in conflict — and finding yourself. Still in development, launching at the end of 2026.">Konflikt frakcí a neznáma — a hledání sebe sama. Ještě ve vývoji, vychází na konci roku 2026.</div>
           </a>
           <a class="pr-card" href="https://3rstudio.eu/gream.html">
             <div class="pr-dot teal"></div>
             <div class="pr-name">Gream</div>
-            <div class="pr-type" data-cs="Vzdělávání · Mobile" data-en="Education · Mobile">Vzdělávání · Mobile</div>
-            <div class="pr-desc" data-cs="Vzdělávací hra pro děti. App Store + Play, 2026." data-en="Educational game for kids. App Store + Play, 2026.">Vzdělávací hra pro děti. App Store + Play, 2026.</div>
+            <div class="pr-type" data-cs="Kvíz · Mobile" data-en="Quiz · Mobile">Kvíz · Mobile</div>
+            <div class="pr-desc" data-cs="Kvízová hra venku pro celou rodinu. Ještě ve vývoji, Google Play na konci roku 2026." data-en="Outdoor quiz game for the whole family. Still in development, Google Play at the end of 2026.">Kvízová hra venku pro celou rodinu. Ještě ve vývoji, Google Play na konci roku 2026.</div>
           </a>
         </div>
         <div class="tags"><a class="tag" href="https://3rstudio.eu/" data-cs="Všechny projekty →" data-en="All projects →">Všechny projekty →</a></div>
@@ -776,36 +778,37 @@ const pfill = document.getElementById('pfill');
 let pageIndex = 0;
 let isTransitioning = false;
 
+// Native scroll + CSS scroll-snap (robust on every device). No wheel hijacking.
 function goTo(index) {
-  if (isTransitioning) return;
   index = Math.max(0, Math.min(index, sections.length - 1));
-  if (index === pageIndex) return;
-  isTransitioning = true;
   pageIndex = index;
-
-  document.documentElement.scrollTo({ top: sections[index].offsetTop, behavior: 'smooth' });
   navItems.forEach((n, i) => n.classList.toggle('active', i === index));
-  pfill.style.height = (index / Math.max(sections.length - 1, 1) * 100) + '%';
-
-  setTimeout(() => { isTransitioning = false; }, 750);
+  if (pfill) pfill.style.height = (index / Math.max(sections.length - 1, 1) * 100) + '%';
+  sections[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
-window.addEventListener('wheel', e => {
-  e.preventDefault();
-  goTo(pageIndex + (e.deltaY > 0 ? 1 : -1));
-}, { passive: false });
-
+// Keyboard nav (arrows / page keys) — never blocks normal scrolling
 window.addEventListener('keydown', e => {
-  // Don't intercept when iframe has focus (user is playing the game)
-  if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); goTo(pageIndex + 1); }
+  if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); goTo(pageIndex + 1); }
   if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); goTo(pageIndex - 1); }
 });
 
-let touchStartY = 0;
-window.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
-window.addEventListener('touchend', e => {
-  const dy = touchStartY - e.changedTouches[0].clientY;
-  if (Math.abs(dy) > 44) goTo(pageIndex + (dy > 0 ? 1 : -1));
+// Keep active nav + progress in sync during native scroll (mobile) and after transitions.
+let _navRaf = false;
+window.addEventListener('scroll', () => {
+  if (_navRaf) return; _navRaf = true;
+  requestAnimationFrame(() => {
+    _navRaf = false;
+    if (isTransitioning) return;
+    const y = (document.documentElement.scrollTop || window.pageYOffset) + window.innerHeight * 0.4;
+    let idx = 0;
+    sections.forEach((sec, i) => { if (sec.offsetTop <= y) idx = i; });
+    if (idx !== pageIndex) {
+      pageIndex = idx;
+      navItems.forEach((n, i) => n.classList.toggle('active', i === idx));
+      if (pfill) pfill.style.height = (idx / Math.max(sections.length - 1, 1) * 100) + '%';
+    }
+  });
 }, { passive: true });
 
 navItems.forEach(n => {
@@ -813,7 +816,7 @@ navItems.forEach(n => {
 });
 
 /* ===== CONTACT FORM ===== */
-const CONTACT_URL = 'https://n8n.romanpavlorek.eu/webhook/contact';
+const CONTACT_URL = '/api/hook/contact';
 
 async function submitContact(e) {
   e.preventDefault();
@@ -849,6 +852,7 @@ async function submitContact(e) {
 function cookieConsent(choice) {
   document.cookie = 'cookie-consent=' + choice + '; max-age=' + (365*24*3600) + '; path=/; SameSite=Lax';
   document.getElementById('cookie-bar').style.display = 'none';
+  if (choice === 'yes' && typeof gtag === 'function') gtag('consent', 'update', { analytics_storage: 'granted' });
 }
 
 /* ===== SCROLL REVEAL ===== */
