@@ -481,6 +481,7 @@
   @media (max-width: 600px) {
     .social-grid { grid-template-columns: 1fr 1fr; }
     .stats-grid { grid-template-columns: 1fr 1fr; }
+    .spotify-wrap { padding: 14px; }
     footer { flex-direction: column; align-items: flex-start; gap: 12px; }
   }
 </style>
@@ -523,7 +524,7 @@ a.soc-card[href="#"], a.soc-link[href="#"], .hero-cta a.btn-primary[href="#"] { 
     </div>
     <p class="hero-text" data-cs="Rychlá. Hlasitá. Přímočará. Pavler je alias bez filtrů — hudba stavěná pro moment, který tě zasáhne dřív, než stačíš přemýšlet." data-en="Fast. Loud. Direct. Pavler is an alias without filters — music built for the moment that hits you before you have time to think.">Rychlá. Hlasitá. Přímočará. Pavler je alias bez filtrů — hudba stavěná pro moment, který tě zasáhne dřív, než stačíš přemýšlet.</p>
     <div class="hero-cta">
-      <a class="btn-primary" href="#" target="_blank" rel="noopener">
+      <a class="btn-primary" href="https://open.spotify.com/artist/3LFMxUfHiB7enLpnG6xfXE" target="_blank" rel="noopener">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
         <span data-cs="Spotify" data-en="Spotify">Spotify</span>
       </a>
@@ -543,30 +544,22 @@ a.soc-card[href="#"], a.soc-link[href="#"], .hero-cta a.btn-primary[href="#"] { 
   <div class="player-inner">
     <div class="player-about">
       <h2 data-cs="Poslouchej teď" data-en="Listen now">Poslouchej teď</h2>
-      <p data-cs="Minutové vzorky. Plné tracky. Všechno na jednom místě." data-en="Minute samples. Full tracks. Everything in one place.">Minutové vzorky. Plné tracky. Všechno na jednom místě.</p>
+      <p data-cs="Celé album Vol. 1 je venku na Spotify. Pusť si ho přímo tady." data-en="The full Vol. 1 album is out on Spotify. Play it right here.">Celé album Vol. 1 je venku na Spotify. Pusť si ho přímo tady.</p>
       <p data-cs="Produkce postavená na rychlosti a instinktu — žádné kompromisy, jen zvuk." data-en="Production built on speed and instinct — no compromises, just sound.">Produkce postavená na rychlosti a instinktu — žádné kompromisy, jen zvuk.</p>
     </div>
     <div class="spotify-wrap">
       <span class="spotify-label" data-cs="Spotify · Pavler" data-en="Spotify · Pavler">Spotify · Pavler</span>
-      <div class="spotify-placeholder">
-        <!-- Replace with:
-          <iframe src="https://open.spotify.com/embed/artist/[PAVLER_ARTIST_ID]?utm_source=generator&theme=0"
-                  width="100%" height="352" frameborder="0" allowfullscreen
-                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-        -->
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--teal)"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-        <span data-cs="Brzy na Spotify" data-en="Coming soon on Spotify">Brzy na Spotify</span>
-      </div>
+      <iframe src="https://open.spotify.com/embed/artist/3LFMxUfHiB7enLpnG6xfXE?utm_source=generator&theme=0" title="Pavler na Spotify" width="100%" height="352" style="border:0;border-radius:12px" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
     </div>
   </div>
   <div class="pavler-albums" style="max-width:1100px;margin:8px auto 0;padding:0 24px 8px;display:flex;gap:26px;flex-wrap:wrap;justify-content:center;">
     <figure style="margin:0;width:300px;max-width:44vw;">
       <img src="pavler-vol1.jpg?v=1" alt="Pavler, Vol. 1" loading="lazy" style="width:100%;border-radius:16px;border:1px solid var(--border);box-shadow:0 14px 46px rgba(0,0,0,.55);">
-      <figcaption style="margin-top:12px;text-align:center;color:var(--muted);font-size:14px;">Pavler &middot; Vol. 1</figcaption>
+      <figcaption style="margin-top:12px;text-align:center;color:var(--muted);font-size:14px;">Pavler &middot; Vol. 1 &middot; <a href="https://open.spotify.com/artist/3LFMxUfHiB7enLpnG6xfXE" target="_blank" rel="noopener" style="color:var(--teal)" data-cs="venku na Spotify" data-en="out on Spotify">venku na Spotify</a></figcaption>
     </figure>
     <figure style="margin:0;width:300px;max-width:44vw;">
       <img src="pavler-vol2.jpg?v=1" alt="Pavler, Vol. 2" loading="lazy" style="width:100%;border-radius:16px;border:1px solid var(--border);box-shadow:0 14px 46px rgba(0,0,0,.55);">
-      <figcaption style="margin-top:12px;text-align:center;color:var(--muted);font-size:14px;">Pavler &middot; Vol. 2</figcaption>
+      <figcaption style="margin-top:12px;text-align:center;color:var(--muted);font-size:14px;">Pavler &middot; Vol. 2 &middot; <span data-cs="připravuje se" data-en="coming soon">připravuje se</span></figcaption>
     </figure>
   </div>
 </section>
@@ -609,7 +602,7 @@ a.soc-card[href="#"], a.soc-link[href="#"], .hero-cta a.btn-primary[href="#"] { 
   <div class="section-label" data-cs="Sleduj" data-en="Follow">Sleduj</div>
   <div class="social-grid">
 
-    <a class="soc-card" href="#" target="_blank" rel="noopener">
+    <a class="soc-card" href="https://open.spotify.com/artist/3LFMxUfHiB7enLpnG6xfXE" target="_blank" rel="noopener">
       <span class="soc-icon" style="background:rgba(30,215,96,0.15);">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
       </span>
