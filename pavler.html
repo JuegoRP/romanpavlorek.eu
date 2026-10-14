@@ -58,6 +58,7 @@
   }
   .nav-back:hover { color: var(--teal); }
   .nav-back::before { content: '←  '; }
+  @media (max-width: 480px) { .nav-back { font-size: 0; } .nav-back::before { font-size: 18px; } }
 
   .nav-sep { color: var(--border); font-size: 18px; margin: 0 4px; }
 
@@ -483,6 +484,10 @@
     footer { flex-direction: column; align-items: flex-start; gap: 12px; }
   }
 </style>
+<style>
+/* Kanály čekající na spuštění: mrtvé odkazy ztlumit; ožijí automaticky po doplnění URL */
+a.soc-card[href="#"], a.soc-link[href="#"], .hero-cta a.btn-primary[href="#"] { opacity:.5; pointer-events:none; }
+</style>
 </head>
 <body>
 
@@ -506,7 +511,7 @@
   <p class="hero-eyebrow" data-cs="Hudební alias · Elektronická produkce" data-en="Music alias · Electronic production">Hudební alias · Elektronická produkce</p>
 
   <div class="hero-name">
-    <img src="pavler-logo.svg?v=3" alt="PAVLER — 3 entity, 2 hlasy, 1 vlna" style="display:block;width:min(620px,90vw);height:auto;margin:0 auto;filter:drop-shadow(0 0 26px rgba(168,85,247,.4));">
+    <img src="pavler-wordmark.png?v=2" alt="PAVLER — 3 entity, 2 hlasy, 1 vlna" style="display:block;width:min(620px,90vw);height:auto;margin:0 auto;filter:drop-shadow(0 0 26px rgba(168,85,247,.4));">
   </div>
 
   <div class="hero-desc">
@@ -526,6 +531,9 @@
         <span data-cs="Přehrát" data-en="Listen">Přehrát</span>
       </a>
     </div>
+  </div>
+  <div class="hero-crew" style="margin:52px auto 0;max-width:1080px;padding:0 20px;">
+    <img src="pavler-trio.png?v=1" alt="RAZOR · PAVLER · NYXA" loading="lazy" style="display:block;width:100%;height:auto;filter:drop-shadow(0 24px 70px rgba(168,85,247,.35));">
   </div>
 </section>
 
@@ -550,6 +558,16 @@
         <span data-cs="Brzy na Spotify" data-en="Coming soon on Spotify">Brzy na Spotify</span>
       </div>
     </div>
+  </div>
+  <div class="pavler-albums" style="max-width:1100px;margin:8px auto 0;padding:0 24px 8px;display:flex;gap:26px;flex-wrap:wrap;justify-content:center;">
+    <figure style="margin:0;width:300px;max-width:44vw;">
+      <img src="pavler-vol1.jpg?v=1" alt="Pavler, Vol. 1" loading="lazy" style="width:100%;border-radius:16px;border:1px solid var(--border);box-shadow:0 14px 46px rgba(0,0,0,.55);">
+      <figcaption style="margin-top:12px;text-align:center;color:var(--muted);font-size:14px;">Pavler &middot; Vol. 1</figcaption>
+    </figure>
+    <figure style="margin:0;width:300px;max-width:44vw;">
+      <img src="pavler-vol2.jpg?v=1" alt="Pavler, Vol. 2" loading="lazy" style="width:100%;border-radius:16px;border:1px solid var(--border);box-shadow:0 14px 46px rgba(0,0,0,.55);">
+      <figcaption style="margin-top:12px;text-align:center;color:var(--muted);font-size:14px;">Pavler &middot; Vol. 2</figcaption>
+    </figure>
   </div>
 </section>
 
